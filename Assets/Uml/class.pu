@@ -1,0 +1,49 @@
+@startuml SoraPuzzleAction
+
+abstract class Character{
+    # string charName
+    # int vit
+    # float moveSpeed
+    # bool isKO
+}
+
+class Player{
+    - int atkPower
+    + Jump() : void
+}
+
+class Enemy{
+    + Chase(tgt : Player) : void
+}
+
+class AttackPattern{
+    - string atkName
+    - int atkPower
+    - float coolTime
+}
+
+interface IMovable{
+    + Move() : void
+}
+
+interface IDamageable{
+    + TakeDamage(amount : int) : void
+}
+
+interface IAttackable{
+    + Attack(tgt : IDamageable, ptn : AttackPattern) : void
+}
+
+Player --|> Character
+Player ..|> IMovable
+Player ..|> IAttackable
+Player ..|> IDamageable
+
+
+Enemy --|> Character
+Enemy "1" o-- "*" AttackPattern
+Enemy ..|> IMovable
+Enemy ..|> IAttackable
+Enemy ..|> IDamageable
+
+@enduml
