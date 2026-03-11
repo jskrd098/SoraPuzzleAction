@@ -69,9 +69,6 @@
         <mxCell id="pt3lwnELBwHd_nTeb_py-7" parent="L5NkyoWU7cnRC-8idZzs-21" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ PlayerInputY(float): void" vertex="1">
           <mxGeometry height="26" width="160" y="112" as="geometry" />
         </mxCell>
-        <mxCell id="xKRVpc-qtdXalkFRgjZN-9" edge="1" parent="1" source="L5NkyoWU7cnRC-8idZzs-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="L5NkyoWU7cnRC-8idZzs-13">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="L5NkyoWU7cnRC-8idZzs-25" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PlayerMovement" vertex="1">
           <mxGeometry height="86" width="160" x="290" y="600" as="geometry" />
         </mxCell>
@@ -83,9 +80,6 @@
         </mxCell>
         <mxCell id="L5NkyoWU7cnRC-8idZzs-28" parent="L5NkyoWU7cnRC-8idZzs-25" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ PlayerMove(): type" vertex="1">
           <mxGeometry height="26" width="160" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="xKRVpc-qtdXalkFRgjZN-17" edge="1" parent="1" source="L5NkyoWU7cnRC-8idZzs-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="L5NkyoWU7cnRC-8idZzs-13">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L5NkyoWU7cnRC-8idZzs-29" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PlayerWin" vertex="1">
           <mxGeometry height="86" width="160" x="820" y="600" as="geometry">
@@ -100,9 +94,6 @@
         </mxCell>
         <mxCell id="L5NkyoWU7cnRC-8idZzs-32" parent="L5NkyoWU7cnRC-8idZzs-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ PlayerWin(): void" vertex="1">
           <mxGeometry height="26" width="160" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="xKRVpc-qtdXalkFRgjZN-18" edge="1" parent="1" source="L5NkyoWU7cnRC-8idZzs-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="L5NkyoWU7cnRC-8idZzs-13">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="L5NkyoWU7cnRC-8idZzs-33" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PlayerLose" vertex="1">
           <mxGeometry height="86" width="160" x="990" y="600" as="geometry" />
@@ -140,9 +131,6 @@
         <mxCell id="pt3lwnELBwHd_nTeb_py-16" parent="pt3lwnELBwHd_nTeb_py-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ method(type): type" vertex="1">
           <mxGeometry height="26" width="160" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="xKRVpc-qtdXalkFRgjZN-15" edge="1" parent="1" source="3llHXHSIi8HC60sM2auQ-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="L5NkyoWU7cnRC-8idZzs-13">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="3llHXHSIi8HC60sM2auQ-6" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PlayerClimbing" vertex="1">
           <mxGeometry height="86" width="160" x="470" y="600" as="geometry" />
         </mxCell>
@@ -154,9 +142,6 @@
         </mxCell>
         <mxCell id="3llHXHSIi8HC60sM2auQ-9" parent="3llHXHSIi8HC60sM2auQ-6" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ PlayerClimb(): type" vertex="1">
           <mxGeometry height="26" width="160" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="xKRVpc-qtdXalkFRgjZN-16" edge="1" parent="1" source="3llHXHSIi8HC60sM2auQ-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="L5NkyoWU7cnRC-8idZzs-13">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="3llHXHSIi8HC60sM2auQ-10" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PlayerPushing" vertex="1">
           <mxGeometry height="86" width="160" x="650" y="600" as="geometry" />
