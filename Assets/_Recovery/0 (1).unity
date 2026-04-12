@@ -1607,7 +1607,6 @@ GameObject:
   - component: {fileID: 1705062083}
   - component: {fileID: 1705062085}
   - component: {fileID: 1705062084}
-  - component: {fileID: 1705062086}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1750,6 +1749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc6fead49390b94a8069bf94f0947cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
+  moveSpd: 5
 --- !u!61 &1705062085
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1796,75 +1796,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8125, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1705062086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705062079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fa139d840e6166478528c7dff91a6f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputActionExample
-  _action:
-    m_Name: Action
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f5fe642b-743d-44ef-ac7c-62b370f001ad
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: ceff65ad-074c-43e7-834b-f351b4c08e61
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 0
-    - m_Name: 2D Vector
-      m_Id: a1aa2e2f-20f7-406e-826b-3222673b8918
-      m_Path: 2DVector
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 4
-    - m_Name: up
-      m_Id: 14af971e-a5c6-439c-8e7a-18c4148e15e9
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 8
-    - m_Name: down
-      m_Id: 19d2a4c1-d983-4a68-8fd3-8e5e91e811a5
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 8
-    - m_Name: left
-      m_Id: 1b555a3a-260c-4def-9cb0-5daf3700347e
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 8
-    - m_Name: right
-      m_Id: 795f9aba-26c3-4f40-87d0-96a45f013ee1
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Action
-      m_Flags: 8
-    m_Flags: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
