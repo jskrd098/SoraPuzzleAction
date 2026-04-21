@@ -1,65 +1,31 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerMove))]
+[RequireComponent(typeof(Rigidbody2D))]
 
 public class PlayerController : MonoBehaviour
 {
-    public float walkSpeed = 5f;
-    public float jumpPower = 5f;
-    private Rigidbody2D rb;
-    private InputAction walkAction;
-    private InputAction jumpAction;
-
-    void Awake()
-    {
-        walkAction = InputSystem.actions.FindAction("Walk");
-        jumpAction = InputSystem.actions.FindAction("Jump");
-    }
-
-    void OnEnable()
-    {
-        walkAction.performed += OnWalk;
-        walkAction.canceled += OnWalkCanceled;
-        jumpAction.started += OnJump;
-    }
-
-    void OnDisable()
-    {
-        walkAction.performed -= OnWalk;
-        walkAction.canceled -= OnWalkCanceled;
-        jumpAction.started -= OnJump;
-    }
+    [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private PlayerMove _playerMove;
+    private Rigidbody2D _rb;
+    [SerializeField] private float jumpPower = 5f;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _playerInput = GetComponent<PlayerInput>();
+        _playerMove = GetComponent<PlayerMove>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-    }
-
+        _playerInput.ReadInput();
+        _rb.linearVelocity = new Vector2(_rb.linearVelocityX, _playerInput.JumpInput ? jumpPower : _rb.linearVelocityY);
+    } 
 
     void FixedUpdate()
     {
-
-    }
-
-    void OnWalk(InputAction.CallbackContext context)
-    {
-        Vector2 walk = context.ReadValue<Vector2>();
-        rb.linearVelocityX = walk.x * walkSpeed;
-        Debug.Log("OnWalk");
-    }
-
-    void OnWalkCanceled(InputAction.CallbackContext context)
-    {
-        rb.linearVelocityX = 0f;
-        Debug.Log("OnWalkCanceled");
-    }
-
-    void OnJump(InputAction.CallbackContext context)
-    {
-        rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-        Debug.Log("OnJump");
+        _playerMove.Walk(_rb, _playerInput.MoveInput);
+        _playerMove.Climb(_rb, _playerInput.MoveInput);
     }
 }

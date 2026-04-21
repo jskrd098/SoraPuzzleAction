@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IWalkable
 {
-    //public float walkSpeed { get; set; }
+    public float WalkSpeed { get; }
 
-    public void Walk(float direction);
+    public void Walk(Rigidbody2D rb, Vector2 direction);
 }

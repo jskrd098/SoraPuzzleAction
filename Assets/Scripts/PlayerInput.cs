@@ -3,21 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    private IWalkable _walkable;
+    private InputSystem_Actions _inputAction;
+    public Vector2 MoveInput { get; private set; }
+    public bool JumpInput { get; private set; }
 
-    private void Awake()
+    private void Awake() => _inputAction = new InputSystem_Actions();
+    public void OnEnable() => _inputAction.Enable();
+    public void OnDisable() => _inputAction.Disable();
+
+    public void ReadInput()
     {
-        // IWalkableを実装しているコンポーネントを取得
-        _walkable = GetComponent<IWalkable>();
-    }
-
-    // InputSystemの"OnMove"メッセージを受け取る
-    public void OnMove(InputValue value)
-    {
-        // 左右の入力値(-1.0f ~ 1.0f)を受け取る
-        float moveInput = value.Get<Vector2>().x;
-
-        // IWalkableのWalkメソッドを呼び出す
-        _walkable?.Walk(moveInput);
+        MoveInput = _inputAction.Player.Move.ReadValue<Vector2>();
+        JumpInput = _inputAction.Player.Jump.WasPressedThisFrame();
     }
 }

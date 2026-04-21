@@ -1607,6 +1607,8 @@ GameObject:
   - component: {fileID: 1705062083}
   - component: {fileID: 1705062085}
   - component: {fileID: 1705062084}
+  - component: {fileID: 1705062086}
+  - component: {fileID: 1705062087}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1726,7 +1728,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 955714815c6192f40bfbf523546007ed, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1749,7 +1751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bc6fead49390b94a8069bf94f0947cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
-  walkSpeed: 5
+  _playerInput: {fileID: 0}
+  _playerMove: {fileID: 0}
   jumpPower: 5
 --- !u!61 &1705062085
 BoxCollider2D:
@@ -1797,6 +1800,32 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.8125, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1705062086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705062079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77da32ec67fbb8840a21a98ed34ab601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInput
+--- !u!114 &1705062087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705062079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21304fef67e36d34f8302feecf31ddb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
+  _walkSpeed: 5
+  _climbSpeed: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
