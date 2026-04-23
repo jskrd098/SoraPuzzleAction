@@ -225,7 +225,7 @@ GameObject:
   - component: {fileID: 1460566905}
   - component: {fileID: 1460566904}
   - component: {fileID: 1460566903}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1609,6 +1609,7 @@ GameObject:
   - component: {fileID: 1705062084}
   - component: {fileID: 1705062086}
   - component: {fileID: 1705062087}
+  - component: {fileID: 1705062088}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1753,6 +1754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_Controller
   _playerInput: {fileID: 0}
   _playerMove: {fileID: 0}
+  _playerCensor: {fileID: 0}
   jumpPower: 5
 --- !u!61 &1705062085
 BoxCollider2D:
@@ -1826,6 +1828,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
   _walkSpeed: 5
   _climbSpeed: 5
+--- !u!114 &1705062088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705062079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f0de408db341a64da1a309166eb5d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCensor
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _ladderLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
