@@ -1,9 +1,161 @@
 <mxfile host="app.diagrams.net">
   <diagram name="ページ-1" id="eCxLBlFjGUqf7Z6m2j1D">
-    <mxGraphModel>
+    <mxGraphModel dx="2077" dy="230" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Idle" vertex="1">
+          <mxGeometry height="40" width="40" x="320" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Walk" vertex="1">
+          <mxGeometry height="40" width="40" x="800" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-3" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-1" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="570" y="930" />
+              <mxPoint x="570" y="930" />
+            </Array>
+            <mxPoint x="460" y="1010" as="sourcePoint" />
+            <mxPoint x="560" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-6" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="(IsGrounded or IsOnLadder or IsInLadder) and LR" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="5" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-7" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-2" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="570" y="950" />
+              <mxPoint x="570" y="950" />
+            </Array>
+            <mxPoint x="740" y="1010" as="sourcePoint" />
+            <mxPoint x="410" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-10" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-7" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="(IsGrounded or IsOnLadder) and N" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="-10" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Climb" vertex="1">
+          <mxGeometry height="40" width="40" x="560" y="1160" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-12" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-2" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-11" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="1170" />
+            </Array>
+            <mxPoint x="1030" y="1050" as="sourcePoint" />
+            <mxPoint x="710" y="1050" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-15" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="(IsOnLadder and D) or (IsInLadder and UD)" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="-119" y="-84" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-16" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-11" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="1190" />
+            </Array>
+            <mxPoint x="872" y="1050" as="sourcePoint" />
+            <mxPoint x="720" y="1260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-17" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-16" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="IsInLadder and LR" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-40" y="-40" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-22" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-11" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="1170" />
+            </Array>
+            <mxPoint x="750" y="1120" as="sourcePoint" />
+            <mxPoint x="680" y="1340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-23" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-22" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="IsOnLadder and (U or N)" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="64" y="-89" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-25" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-1" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-11" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="1190" />
+            </Array>
+            <mxPoint x="695" y="1335" as="sourcePoint" />
+            <mxPoint x="430" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-26" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-25" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="(IsOnLadder and D) or (IsInLadder and U)" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="-39" y="-61" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Jump" vertex="1">
+          <mxGeometry height="40" width="40" x="560" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-28" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Fall" vertex="1">
+          <mxGeometry height="40" width="40" x="80" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Push" vertex="1">
+          <mxGeometry height="40" width="40" x="80" y="1160" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-32" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Goal" vertex="1">
+          <mxGeometry height="40" width="40" x="-280" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-33" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Miss" vertex="1">
+          <mxGeometry height="40" width="40" x="-280" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-35" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-1" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-27" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="710" />
+            </Array>
+            <mxPoint x="750" y="890" as="sourcePoint" />
+            <mxPoint x="1070" y="890" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-36" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-35" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="IsGrounded and J" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="89" y="44" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-37" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-2" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-27" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="690" />
+            </Array>
+            <mxPoint x="550" y="975" as="sourcePoint" />
+            <mxPoint x="710" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-38" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-37" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="IsGrounded and J" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="-81" y="54" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-39" edge="1" parent="1" source="jKU9ux3vtCMjaz6sIP6h-27" style="endArrow=classic;html=1;rounded=0;elbow=vertical;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jKU9ux3vtCMjaz6sIP6h-1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="690" />
+            </Array>
+            <mxPoint x="500" y="1035" as="sourcePoint" />
+            <mxPoint x="660" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jKU9ux3vtCMjaz6sIP6h-40" connectable="0" parent="jKU9ux3vtCMjaz6sIP6h-39" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="IsGrounded" vertex="1">
+          <mxGeometry relative="1" x="-0.0281" y="-1" as="geometry">
+            <mxPoint x="63" y="31" as="offset" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
