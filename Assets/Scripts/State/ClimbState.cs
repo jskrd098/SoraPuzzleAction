@@ -40,12 +40,7 @@ public class ClimbState : IState
         _isInLadder = _playerCensor._isInLadder;
 
         // Climb
-        if (_playerInput.MoveInput.y != 0 && _isInLadder) // ã‰º“ü—Í‚ğ—Dæ
-        {
-            _playerClimb.Climb(_rb, _playerInput.MoveInput);
-            return;
-        }
-        else if (_playerInput.MoveInput.x != 0 && _isInLadder)
+        if (_isInLadder)
         {
             _playerClimb.Climb(_rb, _playerInput.MoveInput);
         }

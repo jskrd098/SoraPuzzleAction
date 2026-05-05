@@ -13,4 +13,16 @@ public class PlayerWalk : MonoBehaviour, IWalkable
         // 入力方向に応じてキャラクターの向きを変える
         if (direction.x != 0) transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
     }
+
+    public void PosAdjust(Rigidbody2D _rb)
+    {
+        // 現在の位置を取得
+        Vector2 prevPos = _rb.position;
+
+        // 移動後の位置を取得
+        Vector2 nextPos = new Vector2(prevPos.x, (float)Mathf.Round(prevPos.y));
+
+        // Y座標を整数に丸める
+        transform.position = nextPos;
+    }
 }

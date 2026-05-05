@@ -28,6 +28,8 @@ public class WalkState : IState
     public void Enter()
     {
         //Debug.Log("State : WalkState Enter");
+        // Y座標の正規化
+        _playerWalk.PosAdjust(_rb);
         // Walkアニメーションへの切替
     }
 
