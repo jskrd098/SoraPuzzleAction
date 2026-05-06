@@ -8,6 +8,7 @@ public class WalkState : IState
     private PlayerCensor _playerCensor;
     private Rigidbody2D _rb;
     private PlayerWalk _playerWalk;
+    //private MovementUtils _movementUtils;
 
     private bool _isGrounded;
     private bool _isOnLadder;
@@ -20,6 +21,7 @@ public class WalkState : IState
         _playerCensor = player._playerCensor;
         _rb = player._rb;
         _playerWalk = player.GetComponent<PlayerWalk>();
+        //_movementUtils = new MovementUtils();
         _isGrounded = false;
         _isOnLadder = false;
         _isInLadder = false;
@@ -28,8 +30,6 @@ public class WalkState : IState
     public void Enter()
     {
         //Debug.Log("State : WalkState Enter");
-        // Y座標の正規化
-        _playerWalk.PosAdjust(_rb);
         // Walkアニメーションへの切替
     }
 
@@ -54,7 +54,7 @@ public class WalkState : IState
         }
 
         // Climb
-        if (_playerInput.MoveInput.y != 0 && _isInLadder)
+        if (_playerInput.MoveInput.y != 0 && (_isInLadder || _isOnLadder))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
         }

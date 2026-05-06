@@ -7,7 +7,10 @@ public class PlayerFall : MonoBehaviour, IFallable
     
     public void Fall(Rigidbody2D _rb)
     {
-        // 落下
+        // 落下（垂直移動）
         _rb.linearVelocity = new Vector2(0.0f, -_fallSpeed);
+
+        // 垂直移動時は X を整数へ向かってスナップ
+        _rb.PosAdjustToNearestX(_fallSpeed);
     }
 }

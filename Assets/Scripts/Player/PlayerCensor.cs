@@ -28,9 +28,9 @@ public class PlayerCensor : MonoBehaviour
         _isOnLadder = IsOnLadder(_collider2D);
         _isInLadder = IsInLadder(_collider2D);
 
-        Debug.Log("Grounded: " + _isGrounded);
-        Debug.Log("OnLadder: " + _isOnLadder);
-        Debug.Log("InLadder: " + _isInLadder);
+        if (_isGrounded) Debug.Log("Grounded");
+        if (_isOnLadder) Debug.Log("OnLadder");
+        if (_isInLadder) Debug.Log("InLadder");
     }
 
     // 地面との接触判定
