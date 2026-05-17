@@ -14,18 +14,6 @@ public class PlayerWalk : MonoBehaviour, IWalkable
         if (direction.x != 0) transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
 
         // 水平移動中は Y を整数へ向かってスナップ
-        _rb.PosAdjustToNearestY(_walkSpeed);
+        _rb.PosAdjustToNearestYByFacing(_walkSpeed, direction.y);
     }
-
-    //public void PosAdjust(Rigidbody2D _rb)
-    //{
-    //    // 現在の位置を取得
-    //    Vector2 prevPos = _rb.position;
-
-    //    // 移動後の位置を取得
-    //    Vector2 nextPos = new Vector2(prevPos.x, (float)Mathf.Round(prevPos.y));
-
-    //    // Y座標を整数に丸める
-    //    transform.position = nextPos;
-    //}
 }

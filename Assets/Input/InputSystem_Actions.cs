@@ -189,7 +189,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
-                    ""path"": ""Dpad"",
+                    ""path"": ""Dpad(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -284,17 +284,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8"",
-                    ""path"": ""<XRController>/{Primary2DAxis}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",

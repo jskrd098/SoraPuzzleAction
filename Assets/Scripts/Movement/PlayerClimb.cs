@@ -11,19 +11,18 @@ public class PlayerClimb : MonoBehaviour, IClimbable
         if (direction.y != 0) direction.x = 0; // 横入力を無効化
         _rb.linearVelocity = new Vector2(direction.x * _climbSpeed, direction.y * _climbSpeed);
 
+        // 入力方向に応じてキャラクターの向きを変える
+        if (direction.x != 0) transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
+
         // 垂直移動（上下）がある場合は X を整数へ向かってスナップ
         if (direction.y != 0)
         {
-            _rb.PosAdjustToNearestX(_climbSpeed);
+            _rb.PosAdjustToNearestXByFacing(_climbSpeed, direction.x);
         }
-        // 垂直移動がなく水平移動のみの場合は Y を整数へ向かってスナップ
-        else if (direction.x != 0)
-        {
-            _rb.PosAdjustToNearestY(_climbSpeed);
-        }
-        else
-        {
-            // 入力無しのときは補正しない（必要なら PosAdjustToNearest* を呼んで停止位置へ合わせる）
-        }
+        //// 垂直移動がなく水平移動のみの場合は Y を整数へ向かってスナップ
+        //else if (direction.x != 0)
+        //{
+        //    _rb.PosAdjustToNearestY(_climbSpeed);
+        //}
     }
 }

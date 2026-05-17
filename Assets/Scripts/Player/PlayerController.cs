@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        // 必要なコンポーネントを取得
         _playerInput = GetComponent<PlayerInput>();
         _playerCensor = GetComponent<PlayerCensor>();
         _rb = GetComponent<Rigidbody2D>();
@@ -23,12 +24,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // 入力の更新
         _playerInput.ReadInput();
-        _playerCensor.Enter();
     } 
 
     void FixedUpdate()
     {
+        // 接地・接触判定の更新と状態の更新
         _playerCensor.CensorUpdate(_collider2D);
         _stateMachine.Update();
     }

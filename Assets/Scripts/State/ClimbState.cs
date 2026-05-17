@@ -11,7 +11,9 @@ public class ClimbState : IState
 
     private bool _isGrounded;
     private bool _isOnLadder;
-    private bool _isInLadder;
+    //private bool _isInLadder;
+    private bool _isInLadderL;
+    private bool _isInLadderR;
 
     public ClimbState(PlayerController player)
     {
@@ -22,32 +24,32 @@ public class ClimbState : IState
         _playerClimb = player.GetComponent<PlayerClimb>();
         _isGrounded = false;
         _isOnLadder = false;
-        _isInLadder = false;
+        //_isInLadder = false;
+        _isInLadderL = false;
+        _isInLadderR = false;
     }
 
     public void Enter()
     {
-        //Debug.Log("State : ClimbState Enter");
+        Debug.Log("State : ClimbState Enter");
         // Climbアニメーションへの切替
     }
 
     public void Update()
     {
-        Debug.Log("State : ClimbState Update");
+        //Debug.Log("State : ClimbState Update");
 
         _isGrounded = _playerCensor._isGrounded;
         _isOnLadder = _playerCensor._isOnLadder;
-        _isInLadder = _playerCensor._isInLadder;
+        //_isInLadder = _playerCensor._isInLadder;
+        _isInLadderL = _playerCensor._isInLadderL;
+        _isInLadderR = _playerCensor._isInLadderR;
 
         // Climb
-        if (_isInLadder)
+        if (_isInLadderL && _isInLadderR)
         {
             _playerClimb.Climb(_rb, _playerInput.MoveInput);
-        }
-        else
-        {
-            // 梯子にいるが入力が無い場合は速度を止める
-            _playerClimb.Climb(_rb, Vector2.zero);
+            return;
         }
 
         if (_isGrounded || _isOnLadder)
@@ -56,18 +58,21 @@ public class ClimbState : IState
             if (_playerInput.MoveInput.x == 0)
             {
                 _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
+                return;
             }
             // Walk
             else
             {
                 _player._stateMachine.TransitionTo(_player._stateMachine.walkState);
+                return;
             }
         }
 
         // Fall
-        if (!_isGrounded && !_isOnLadder && !_isInLadder)
+        if (!_isGrounded && !_isOnLadder && (!_isInLadderL && !_isInLadderR))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
+            return;
         }
     }
 

@@ -11,6 +11,6 @@ public class PlayerFall : MonoBehaviour, IFallable
         _rb.linearVelocity = new Vector2(0.0f, -_fallSpeed);
 
         // 垂直移動時は X を整数へ向かってスナップ
-        _rb.PosAdjustToNearestX(_fallSpeed);
+        _rb.PosAdjustToNearestXByFacing(_fallSpeed, -1f);
     }
 }

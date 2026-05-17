@@ -7,7 +7,7 @@ public class FallState : IState
     [SerializeField] private PlayerFall _playerFall;
     private bool isGrounded;
     private bool isOnLadder;
-    private bool isInLadder;
+    //private bool isInLadder;
     private Rigidbody2D _rb;
 
     public FallState(PlayerController player)
@@ -17,7 +17,7 @@ public class FallState : IState
         _rb = _player._rb;
         isGrounded = false;
         isOnLadder = false;
-        isInLadder = false;
+        //isInLadder = false;
     }
 
     public void Enter()
@@ -31,7 +31,7 @@ public class FallState : IState
         Debug.Log("State : FallState Update");
         isGrounded = _player._playerCensor.IsGrounded(_player._rb.position);
         isOnLadder = _player._playerCensor.IsOnLadder(_player._collider2D);
-        isInLadder = _player._playerCensor.IsInLadder(_player._collider2D);
+        //isInLadder = _player._playerCensor.IsInLadder(_player._collider2D);
 
         if (isGrounded || isOnLadder)
         {
@@ -39,21 +39,25 @@ public class FallState : IState
             if(_player._playerInput.MoveInput.x == 0)
             {
                 _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
+                return;
             }
             // Walk
             else
             {
                 _player._stateMachine.TransitionTo(_player._stateMachine.walkState);
+                return;
             }
         }
-        else if (isInLadder)
-        {
-            // Climb
-            _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
-        }
+        //else if (isInLadder)
+        //{
+        //    // Climb
+        //    _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
+        //    return;
+        //}
         else
         {
             _playerFall.Fall(_rb);
+            return;
         }
     }
 
