@@ -9,6 +9,7 @@ public class WalkState : IState
     private Rigidbody2D _rb;
     private PlayerWalk _playerWalk;
     //private MovementUtils _movementUtils;
+    private Animator _anim;
 
     private bool _isGrounded;
     private bool _isOnLadder;
@@ -23,6 +24,7 @@ public class WalkState : IState
         _playerCensor = player._playerCensor;
         _rb = player._rb;
         _playerWalk = player.GetComponent<PlayerWalk>();
+        _anim = player.GetComponent<Animator>();
         _isGrounded = false;
         _isOnLadder = false;
         //_isInLadder = false;
@@ -32,6 +34,7 @@ public class WalkState : IState
     {
         Debug.Log("State : WalkState Enter");
         // Walkアニメーションへの切替
+        _anim.SetBool("PlayerWalk", true);
     }
 
     public void Update()
@@ -84,5 +87,6 @@ public class WalkState : IState
     public void Exit()
     {
         //Debug.Log("State : WalkState Exit");
+        _anim.SetBool("PlayerWalk", false);
     }
 }

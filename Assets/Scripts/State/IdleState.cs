@@ -6,6 +6,7 @@ public class IdleState : IState
     private PlayerInput _playerInput;
     private PlayerCensor _playerCensor;
     private Rigidbody2D _rb;
+    private Animator _anim;
 
     private bool _isGrounded;
     private bool _isOnLadder;
@@ -17,6 +18,7 @@ public class IdleState : IState
         _playerInput = player._playerInput;
         _playerCensor = player._playerCensor;
         _rb = player._rb;
+        _anim = player.GetComponent<Animator>();
         _isGrounded = false;
         _isOnLadder = false;
         _isInLadder = false;
@@ -26,6 +28,8 @@ public class IdleState : IState
     {
         //Debug.Log("State : IdleState Enter");
         // Idleアニメーションへの切替
+        _anim.SetBool("PlayerIdle", true);
+
     }
 
     public void Update()
@@ -70,5 +74,6 @@ public class IdleState : IState
     public void Exit()
     {
         //Debug.Log("State : IdleState Exit");
+        _anim.SetBool("PlayerIdle", false);
     }
 }

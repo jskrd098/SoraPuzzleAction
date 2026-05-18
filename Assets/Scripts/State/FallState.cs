@@ -5,6 +5,7 @@ public class FallState : IState
 {
     private PlayerController _player;
     [SerializeField] private PlayerFall _playerFall;
+    private Animator _anim;
     private bool isGrounded;
     private bool isOnLadder;
     //private bool isInLadder;
@@ -15,6 +16,7 @@ public class FallState : IState
         _player = player;
         _playerFall = player.GetComponent<PlayerFall>();
         _rb = _player._rb;
+        _anim = player.GetComponent<Animator>();
         isGrounded = false;
         isOnLadder = false;
         //isInLadder = false;
@@ -24,6 +26,7 @@ public class FallState : IState
     {
         //Debug.Log("State : FallState Enter");
         // Fallアニメーションへの切替
+        _anim.SetBool("PlayerFall", true);
     }
 
     public void Update()
@@ -64,5 +67,6 @@ public class FallState : IState
     public void Exit()
     {
         //Debug.Log("State : FallState Exit");
+        _anim.SetBool("PlayerFall", false);
     }
 }

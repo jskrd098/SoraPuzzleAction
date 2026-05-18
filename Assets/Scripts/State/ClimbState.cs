@@ -8,6 +8,7 @@ public class ClimbState : IState
     private PlayerCensor _playerCensor;
     private Rigidbody2D _rb;
     private PlayerClimb _playerClimb;
+    private Animator _anim;
 
     private bool _isGrounded;
     private bool _isOnLadder;
@@ -22,6 +23,7 @@ public class ClimbState : IState
         _playerCensor = player._playerCensor;
         _rb = player._rb;
         _playerClimb = player.GetComponent<PlayerClimb>();
+        _anim = player.GetComponent<Animator>();
         _isGrounded = false;
         _isOnLadder = false;
         //_isInLadder = false;
@@ -33,6 +35,8 @@ public class ClimbState : IState
     {
         Debug.Log("State : ClimbState Enter");
         // Climbアニメーションへの切替
+        _anim.SetBool("PlayerClimb", true);
+
     }
 
     public void Update()
@@ -79,5 +83,6 @@ public class ClimbState : IState
     public void Exit()
     {
         //Debug.Log("State : ClimbState Exit");
+        _anim.SetBool("PlayerClimb", false);
     }
 }
