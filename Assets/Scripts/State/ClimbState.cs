@@ -1,88 +1,85 @@
 using UnityEngine;
-[RequireComponent(typeof(PlayerClimb))]
 
 public class ClimbState : IState
 {
-    private PlayerController _player;
-    private PlayerInput _playerInput;
-    private PlayerCensor _playerCensor;
-    private Rigidbody2D _rb;
-    private PlayerClimb _playerClimb;
-    private Animator _anim;
+    private readonly PlayerController _player;
+    private readonly PlayerInput _playerInput;
+    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerAnimation _playerAnimation;
+    private readonly Rigidbody2D _rb;
+    private readonly PlayerClimb _playerClimb;
 
     private bool _isGrounded;
     private bool _isOnLadder;
-    //private bool _isInLadder;
-    private bool _isInLadderL;
-    private bool _isInLadderR;
+    private bool _isInLadderAnd;
+    private bool _isInLadderOr;
 
     public ClimbState(PlayerController player)
     {
-        _player = player;
-        _playerInput = player._playerInput;
-        _playerCensor = player._playerCensor;
-        _rb = player._rb;
+        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
+        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
+        _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerClimb = player.GetComponent<PlayerClimb>();
-        _anim = player.GetComponent<Animator>();
-        _isGrounded = false;
-        _isOnLadder = false;
-        //_isInLadder = false;
-        _isInLadderL = false;
-        _isInLadderR = false;
     }
 
     public void Enter()
     {
-        Debug.Log("State : ClimbState Enter");
-        // Climbアニメーションへの切替
-        _anim.SetBool("PlayerClimb", true);
-
+        _playerAnimation?.SetClimb(true);
     }
 
     public void Update()
     {
-        //Debug.Log("State : ClimbState Update");
-
         _isGrounded = _playerCensor._isGrounded;
         _isOnLadder = _playerCensor._isOnLadder;
-        //_isInLadder = _playerCensor._isInLadder;
-        _isInLadderL = _playerCensor._isInLadderL;
-        _isInLadderR = _playerCensor._isInLadderR;
+        _isInLadderAnd = _playerCensor._isInLadderAnd;
+        _isInLadderOr = _playerCensor._isInLadderOr;
 
-        // Climb
-        if (_isInLadderL && _isInLadderR)
+        float moveX = _playerInput.MoveInput.x;
+        float moveY = _playerInput.MoveInput.y;
+
+        // Animation
+        if ((Mathf.Abs(moveX) == 0) && (Mathf.Abs(moveY) == 0))
         {
-            _playerClimb.Climb(_rb, _playerInput.MoveInput);
-            return;
+            _playerAnimation?.Stop();
+        }
+        else
+        {
+            _playerAnimation?.Play();
         }
 
-        if (_isGrounded || _isOnLadder)
+        // Climb
+        if (_isInLadderAnd)
         {
-            // Idle
-            if (_playerInput.MoveInput.x == 0)
-            {
-                _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
-                return;
-            }
-            // Walk
-            else
-            {
-                _player._stateMachine.TransitionTo(_player._stateMachine.walkState);
-                return;
-            }
+            _playerClimb.Climb(_rb, _playerInput.MoveInput);
+            // Align Position
+            if (Mathf.Abs(moveX) > 0) _playerClimb.AlignPosY(_rb);
+            if (Mathf.Abs(moveY) > 0) _playerClimb.AlignPosX(_rb);
+        }
+
+        // Idle
+        if ((Mathf.Abs(moveX) == 0) && (Mathf.Abs(moveY) == 0) && (_isGrounded || _isOnLadder))
+        {
+            _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
+        }
+
+        // Walk
+        else if ((Mathf.Abs(moveX) > 0) && (_isGrounded || _isOnLadder))
+        {
+            _player._stateMachine.TransitionTo(_player._stateMachine.walkState);
         }
 
         // Fall
-        if (!_isGrounded && !_isOnLadder && (!_isInLadderL && !_isInLadderR))
+        if (!_isGrounded && !_isOnLadder && !_isInLadderOr)
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
-            return;
         }
     }
 
     public void Exit()
     {
-        //Debug.Log("State : ClimbState Exit");
-        _anim.SetBool("PlayerClimb", false);
+        _playerAnimation?.Play();
+        _playerAnimation?.SetClimb(false);
     }
 }

@@ -2,160 +2,17 @@ using UnityEngine;
 
 public static class MovementUtils
 {
-    //// Rigidbody2D ‚ÌˆÊ’u‚ðŽQÆ‚µ‚Ä X Ž²‚ðÅ‚à‹ß‚¢®”‚ÉŠÛ‚ß‚é–Ú•W‚Ü‚Å
-    //// Žw’è‘¬“x‚Å FixedUpdate –ˆ‚ÉˆÚ“®‚³‚¹‚éŠg’£ƒƒ\ƒbƒh
-    //public static void PosAdjustToNearestX(this Rigidbody2D rb, float speed)
-    //{
-    //    // —áŠOˆ—
-    //    if (rb == null) return;
+    private static Vector2 tgtPos; // ç›®çš„åœ°ã¨ãªã‚‹åº§æ¨™
 
-    //    // –Ú•W‚Æ‚È‚é X À•W‚ðŒvŽZiŒ»Ý‚Ì X À•W‚ðÅ‚à‹ß‚¢®”‚ÉŠÛ‚ß‚éj
-    //    float targetX = Mathf.Round(rb.position.x);
-
-    //    // ‚·‚Å‚É–Ú•WˆÊ’u‚É‹ß‚¢ê‡‚ÍˆÚ“®‚µ‚È‚¢
-    //    if (Mathf.Approximately(rb.position.x, targetX)) return;
-
-    //    // –Ú•WˆÊ’u‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é‚½‚ß‚Ì•ûŒü‚Æ‹——£‚ðŒvŽZ
-    //    float direction = Mathf.Sign(targetX - rb.position.x);
-    //    float delta = speed * Time.fixedDeltaTime * direction;
-    //    float nextX = rb.position.x + delta;
-
-    //    // –Ú•WˆÊ’u‚ð’´‚¦‚È‚¢‚æ‚¤‚É’²®
-    //    if ((direction > 0f && nextX > targetX) || (direction < 0f && nextX < targetX))
-    //    {
-    //        nextX = targetX;
-    //    }
-
-    //    // ŽŸ‚ÌˆÊ’u‚ðŒvŽZ‚µ‚Ä Rigidbody2D ‚ðˆÚ“®
-    //    Vector2 nextPos = new Vector2(nextX, rb.position.y);
-    //    rb.MovePosition(nextPos);
-    //}
-
-    //// Rigidbody2D ‚ÌˆÊ’u‚ÆƒLƒƒƒ‰‚ÌŒü‚«‚ðŽQÆ‚µ‚Ä X À•W‚ðis•ûŒü‚ÌÅ‚à‹ß‚¢
-    //// ®”‚ÉŠÛ‚ß‚é–Ú•W‚Ü‚ÅŽw’è‘¬“x‚Å FixedUpdate –ˆ‚ÉˆÚ“®‚³‚¹‚éŠg’£ƒƒ\ƒbƒh
-    //public static void PosAdjustToNextX(this Rigidbody2D rb, float speed)
-    //{
-    //    // —áŠOˆ—
-    //    if (rb == null) return;
-
-    //    // –Ú•W‚Æ‚È‚é X À•W‚ðŒvŽZiŒ»Ý‚Ì X À•W‚ðis•ûŒü‚ÌÅ‚à‹ß‚¢®”‚ÉŠÛ‚ß‚éj
-    //    float direction = Mathf.Sign(rb.linearVelocity.x);
-    //    float targetX = Mathf.Round(rb.position.x + direction * 0.5f);
-
-    //    // ‚·‚Å‚É–Ú•WˆÊ’u‚É‹ß‚¢ê‡‚ÍˆÚ“®‚µ‚È‚¢
-    //    if (Mathf.Approximately(rb.position.x, targetX)) return;
-
-    //    // –Ú•WˆÊ’u‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é‚½‚ß‚Ì•ûŒü‚Æ‹——£‚ðŒvŽZ
-    //    float delta = speed * Time.fixedDeltaTime * direction;
-    //    float nextX = rb.position.x + delta;
-
-    //    // –Ú•WˆÊ’u‚ð’´‚¦‚È‚¢‚æ‚¤‚É’²®
-    //    if ((direction > 0f && nextX > targetX) || (direction < 0f && nextX < targetX))
-    //    {
-    //        nextX = targetX;
-    //    }
-
-    //    // ŽŸ‚ÌˆÊ’u‚ðŒvŽZ‚µ‚Ä Rigidbody2D ‚ðˆÚ“®
-    //    Vector2 nextPos = new Vector2(nextX, rb.position.y);
-    //    rb.MovePosition(nextPos);
-    //}
-
-    //// Rigidbody2D ‚ÌˆÊ’u‚ðŽQÆ‚µ‚Ä Y Ž²‚ðÅ‚à‹ß‚¢®”‚ÉŠÛ‚ß‚é–Ú•W‚Ü‚Å
-    //// Žw’è‘¬“x‚Å FixedUpdate –ˆ‚ÉˆÚ“®‚³‚¹‚éŠg’£ƒƒ\ƒbƒh
-    //public static void PosAdjustToNearestY(this Rigidbody2D rb, float speed)
-    //{
-    //    // —áŠOˆ—
-    //    if (rb == null) return;
-
-    //    // –Ú•W‚Æ‚È‚é Y À•W‚ðŒvŽZiŒ»Ý‚Ì Y À•W‚ðÅ‚à‹ß‚¢®”‚ÉŠÛ‚ß‚éj
-    //    float targetY = Mathf.Round(rb.position.y);
-
-    //    // ‚·‚Å‚É–Ú•WˆÊ’u‚É‹ß‚¢ê‡‚ÍˆÚ“®‚µ‚È‚¢
-    //    if (Mathf.Approximately(rb.position.y, targetY)) return;
-
-    //    // –Ú•WˆÊ’u‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é‚½‚ß‚Ì•ûŒü‚Æ‹——£‚ðŒvŽZ
-    //    float direction = Mathf.Sign(targetY - rb.position.y);
-    //    float delta = speed * Time.fixedDeltaTime * direction;
-    //    float nextY = rb.position.y + delta;
-
-    //    // –Ú•WˆÊ’u‚ð’´‚¦‚È‚¢‚æ‚¤‚É’²®
-    //    if ((direction > 0f && nextY > targetY) || (direction < 0f && nextY < targetY))
-    //    {
-    //        nextY = targetY;
-    //    }
-
-    //    // ŽŸ‚ÌˆÊ’u‚ðŒvŽZ‚µ‚Ä Rigidbody2D ‚ðˆÚ“®
-    //    Vector2 nextPos = new Vector2(rb.position.x, nextY);
-    //    rb.MovePosition(nextPos);
-    //}
-
-
-    // …•½ˆÚ“®‚©‚ç‚’¼ˆÚ“®‚ÖØ‚è‘Ö‚í‚éÛ‚É X À•W‚ðuƒLƒƒƒ‰‚ÌŒü‚¢‚Ä‚¢‚é•ûŒüv‚É‰ˆ‚Á‚Ä®”‚ÖƒXƒiƒbƒv‚µ‚È‚ª‚çˆÚ“®‚·‚é
-    // facingDirection: -1i¶j / +1i‰Ej / 0i•s–¾¨Å‚à‹ß‚¢®”j
-    public static void PosAdjustToNearestXByFacing(this Rigidbody2D rb, float speed, float facingDirection)
+    public static void PosAdjustX(ref Vector2 fwdPos, float speed)
     {
-        if (rb == null) return;
-
-        float sign = Mathf.Sign(facingDirection);
-        float targetX;
-
-        if (Mathf.Approximately(sign, 0f))
-        {
-            // Œü‚«•s–¾‚È‚çÅ‚à‹ß‚¢®”‚Ö
-            targetX = Mathf.Round(rb.position.x);
-        }
-        else
-        {
-            // Œü‚«‚É‰ˆ‚Á‚½•ûŒü‚Ì®”i‰EŒü‚«‚È‚ç ceilA¶Œü‚«‚È‚ç floorj
-            targetX = sign > 0f ? Mathf.Ceil(rb.position.x) : Mathf.Floor(rb.position.x);
-        }
-
-        if (Mathf.Approximately(rb.position.x, targetX)) return;
-
-        float direction = Mathf.Sign(targetX - rb.position.x);
-        float delta = speed * Time.fixedDeltaTime * direction;
-        float nextX = rb.position.x + delta;
-
-        if ((direction > 0f && nextX > targetX) || (direction < 0f && nextX < targetX))
-        {
-            nextX = targetX;
-        }
-
-        Vector2 nextPos = new Vector2(nextX, rb.position.y);
-        rb.MovePosition(nextPos);
+        tgtPos = new Vector2(Mathf.Round(fwdPos.x), fwdPos.y);
+        fwdPos = Vector2.MoveTowards(fwdPos, tgtPos, speed * Time.deltaTime);
     }
 
-    // ‚’¼ˆÚ“®‚©‚ç…•½ˆÚ“®‚ÖØ‚è‘Ö‚í‚éÛ‚É Y À•W‚ðuƒLƒƒƒ‰‚ÌŒü‚¢‚Ä‚¢‚é•ûŒüv‚É‰ˆ‚Á‚Ä®”‚ÖƒXƒiƒbƒv‚µ‚È‚ª‚çˆÚ“®‚·‚é
-    // facingDirection: -1i‰ºj / +1iãj / 0i•s–¾¨Å‚à‹ß‚¢®”j
-    public static void PosAdjustToNearestYByFacing(this Rigidbody2D rb, float speed, float facingDirection)
+    public static void PosAdjustY(ref Vector2 fwdPos, float speed)
     {
-        if (rb == null) return;
-
-        float sign = Mathf.Sign(facingDirection);
-        float targetY;
-
-        if (Mathf.Approximately(sign, 0f))
-        {
-            targetY = Mathf.Round(rb.position.y);
-        }
-        else
-        {
-            // ãŒü‚«‚È‚ç ceilA‰ºŒü‚«‚È‚ç floor
-            targetY = sign > 0f ? Mathf.Ceil(rb.position.y) : Mathf.Floor(rb.position.y);
-        }
-
-        if (Mathf.Approximately(rb.position.y, targetY)) return;
-
-        float direction = Mathf.Sign(targetY - rb.position.y);
-        float delta = speed * Time.fixedDeltaTime * direction;
-        float nextY = rb.position.y + delta;
-
-        if ((direction > 0f && nextY > targetY) || (direction < 0f && nextY < targetY))
-        {
-            nextY = targetY;
-        }
-
-        Vector2 nextPos = new Vector2(rb.position.x, nextY);
-        rb.MovePosition(nextPos);
+        tgtPos = new Vector2(fwdPos.x, Mathf.Round(fwdPos.y));
+        fwdPos = Vector2.MoveTowards(fwdPos, tgtPos, speed * Time.deltaTime);
     }
 }

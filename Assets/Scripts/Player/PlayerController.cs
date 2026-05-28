@@ -1,36 +1,45 @@
 using UnityEngine;
+
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(PlayerCensor))]
+[RequireComponent(typeof(PlayerAnimation))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PlayerWalk))]
+[RequireComponent(typeof(PlayerClimb))]
+[RequireComponent(typeof(PlayerFall))]
 
 public class PlayerController : MonoBehaviour
 {
     public PlayerInput _playerInput;
     public PlayerCensor _playerCensor;
+    public PlayerAnimation _playerAnimation;
     public StateMachine _stateMachine;
     public Rigidbody2D _rb;
     public Collider2D _collider2D;
 
+    // public float InputEpsilon {get; private set;} // 蜈･蜉帙�ｮ譛牙柑蛻､螳壹↓菴ｿ逕ｨ縺吶ｋ蟆上＆縺ｪ蛟､
+
     void Start()
     {
-        // 必要なコンポーネントを取得
         _playerInput = GetComponent<PlayerInput>();
         _playerCensor = GetComponent<PlayerCensor>();
+        _playerAnimation = GetComponent<PlayerAnimation>();
         _rb = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<Collider2D>();
         _stateMachine = new StateMachine(this);
         _stateMachine.Initialize(_stateMachine.idleState);
+        // InputEpsilon = 0.001f;
     }
 
     void Update()
     {
-        // 入力の更新
+        // Read Input
         _playerInput.ReadInput();
     } 
 
     void FixedUpdate()
     {
-        // 接地・接触判定の更新と状態の更新
+        // Update Censor and State Machine
         _playerCensor.CensorUpdate(_collider2D);
         _stateMachine.Update();
     }

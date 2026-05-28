@@ -2,60 +2,63 @@ using UnityEngine;
 
 public class IdleState : IState
 {
-    private PlayerController _player;
-    private PlayerInput _playerInput;
-    private PlayerCensor _playerCensor;
-    private Rigidbody2D _rb;
-    private Animator _anim;
+    private readonly PlayerController _player;
+    private readonly PlayerInput _playerInput;
+    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerAnimation _playerAnimation;
+    private readonly Rigidbody2D _rb;
 
     private bool _isGrounded;
     private bool _isOnLadder;
-    private bool _isInLadder;
+    private bool _isInLadderAnd;
 
     public IdleState(PlayerController player)
     {
-        _player = player;
-        _playerInput = player._playerInput;
-        _playerCensor = player._playerCensor;
-        _rb = player._rb;
-        _anim = player.GetComponent<Animator>();
-        _isGrounded = false;
-        _isOnLadder = false;
-        _isInLadder = false;
+        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
+        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
+        _playerAnimation = player.GetComponent<PlayerAnimation>();
     }
 
     public void Enter()
     {
-        //Debug.Log("State : IdleState Enter");
-        // Idleアニメーションへの切替
-        _anim.SetBool("PlayerIdle", true);
-
+        _playerAnimation?.SetIdle(true);
     }
 
     public void Update()
     {
-        Debug.Log("State : IdleState Update");
-
         _isGrounded = _playerCensor._isGrounded;
         _isOnLadder = _playerCensor._isOnLadder;
-        _isInLadder = _playerCensor._isInLadder;
+        _isInLadderAnd = _playerCensor._isInLadderAnd;
+    
+
+        float moveX = _playerInput.MoveInput.x;
+        float moveY = _playerInput.MoveInput.y;
 
         // Idle
-        if (_playerInput.MoveInput.x == 0)
+        if (Mathf.Abs(moveX) == 0)
         {
-            _rb.linearVelocity = new Vector2(0.0f, 0.0f);
+            _rb.linearVelocity = new Vector2(0.0f, _rb.linearVelocityY);
         }
 
         // Walk
-        if ((_playerInput.MoveInput.x != 0) && (_isGrounded || _isOnLadder))
+        if ((Mathf.Abs(moveX) > 0 && (_isGrounded || _isOnLadder)) ||
+            Mathf.Abs(moveY) > 0 && _isInLadderAnd && (!Mathf.Approximately(_rb.position.x, Mathf.Round(_rb.position.x))))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.walkState);
         }
 
         // Climb
-        if (_playerInput.MoveInput.y != 0 && _isInLadder)
+        if (Mathf.Abs(moveY) > 0 && _isInLadderAnd && Mathf.Approximately(_rb.position.x, Mathf.Round(_rb.position.x)))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
+        }
+
+        // Fall
+        if (!_isGrounded && !_isOnLadder && !_isInLadderAnd)
+        {
+            _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
         }
 
         // Jump
@@ -63,17 +66,10 @@ public class IdleState : IState
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.jumpState);
         }
-
-        // Fall
-        if (!_isGrounded && !_isOnLadder && !_isInLadder)
-        {
-            _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
-        }
     }
 
     public void Exit()
     {
-        //Debug.Log("State : IdleState Exit");
-        _anim.SetBool("PlayerIdle", false);
+        _playerAnimation?.SetIdle(false);
     }
 }

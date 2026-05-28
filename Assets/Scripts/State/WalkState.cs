@@ -1,92 +1,80 @@
 using UnityEngine;
-[RequireComponent(typeof(PlayerWalk))]
 
 public class WalkState : IState
 {
-    private PlayerController _player;
-    private PlayerInput _playerInput;
-    private PlayerCensor _playerCensor;
-    private Rigidbody2D _rb;
-    private PlayerWalk _playerWalk;
-    //private MovementUtils _movementUtils;
-    private Animator _anim;
+    private readonly PlayerController _player;
+    private readonly PlayerInput _playerInput;
+    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerAnimation _playerAnimation;
+    private readonly Rigidbody2D _rb;
+    private readonly PlayerWalk _playerWalk;
 
     private bool _isGrounded;
     private bool _isOnLadder;
-    //private bool _isInLadder;
-    private bool _isInLadderL;
-    private bool _isInLadderR;
+    private bool _isInLadderAnd;
+    private bool _isInLadderOr;
 
     public WalkState(PlayerController player)
     {
-        _player = player;
-        _playerInput = player._playerInput;
-        _playerCensor = player._playerCensor;
-        _rb = player._rb;
+        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
+        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
+        _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerWalk = player.GetComponent<PlayerWalk>();
-        _anim = player.GetComponent<Animator>();
-        _isGrounded = false;
-        _isOnLadder = false;
-        //_isInLadder = false;
     }
 
     public void Enter()
     {
-        Debug.Log("State : WalkState Enter");
-        // Walkアニメーションへの切替
-        _anim.SetBool("PlayerWalk", true);
+        _playerAnimation?.SetWalk(true);
     }
 
     public void Update()
     {
-        //Debug.Log("State : WalkState Update");
-
         _isGrounded = _playerCensor._isGrounded;
         _isOnLadder = _playerCensor._isOnLadder;
-        //_isInLadder = _playerCensor._isInLadder;
-        _isInLadderL = _playerCensor._isInLadderL;
-        _isInLadderR = _playerCensor._isInLadderR;
+        _isInLadderAnd = _playerCensor._isInLadderAnd;
+        _isInLadderOr = _playerCensor._isInLadderOr;
+
+        float moveX = _playerInput.MoveInput.x;
+        float moveY = _playerInput.MoveInput.y;
+
+        // Climb
+        if ((Mathf.Abs(moveY) > 0) && _isInLadderAnd)
+        {
+            if (Mathf.Approximately(_rb.position.x, Mathf.Round(_rb.position.x)))
+            {
+                _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
+            }
+        }
 
         // Walk
-        if ((_playerInput.MoveInput.x != 0) && (_isGrounded || _isOnLadder))
+        if ((Mathf.Abs(moveX) > 0) && (_isGrounded || _isOnLadder))
         {
             _playerWalk.Walk(_rb, _playerInput.MoveInput);
-            return;
         }
 
         // Idle
-        if (_playerInput.MoveInput.x == 0)
+        if ((Mathf.Abs(moveX) == 0) && (_isGrounded || _isOnLadder))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
-            return;
         }
 
-        // Climb
-        if (((_playerInput.MoveInput.y != 0) && _isInLadderL && _isInLadderR) ||
-            ((_playerInput.MoveInput.y < 0) && _isOnLadder))
+        // Fall
+        if (!_isGrounded && !_isOnLadder && !_isInLadderOr)
         {
-            _player._stateMachine.TransitionTo(_player._stateMachine.climbState);
-            return;
+            _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
         }
 
         // Jump
         if (_playerInput.JumpInput)
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.jumpState);
-            return;
-        }
-
-        // Fall
-        if (!_isGrounded && !_isOnLadder && (!_isInLadderL && !_isInLadderR))
-        {
-            _player._stateMachine.TransitionTo(_player._stateMachine.fallState);
-            return;
         }
     }
 
     public void Exit()
     {
-        //Debug.Log("State : WalkState Exit");
-        _anim.SetBool("PlayerWalk", false);
+        _playerAnimation?.SetWalk(false);
     }
 }

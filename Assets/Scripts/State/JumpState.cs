@@ -13,7 +13,6 @@ public class JumpState : IState
 
     public void Enter()
     {
-        // Jumpアニメーションへの切替
         _anim.SetBool("PlayerJump", true);
     }
 

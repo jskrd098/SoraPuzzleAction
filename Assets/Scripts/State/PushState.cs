@@ -13,7 +13,6 @@ public class PushState : IState
 
     public void Enter()
     {
-        // Pushアニメーションへの切替
         _anim.SetBool("PlayerPush", true);
     }
 

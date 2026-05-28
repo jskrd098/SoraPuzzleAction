@@ -7,13 +7,27 @@ public class PlayerWalk : MonoBehaviour, IWalkable
 
     public void Walk(Rigidbody2D _rb, Vector2 direction)
     {
-        // 移動
+        Vector2 pos;
+        
         _rb.linearVelocity = new Vector2(direction.x * _walkSpeed, _rb.linearVelocityY);
-
-        // 入力方向に応じてキャラクターの向きを変える
         if (direction.x != 0) transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
-
-        // 水平移動中は Y を整数へ向かってスナップ
-        _rb.PosAdjustToNearestYByFacing(_walkSpeed, direction.y);
+        
+        pos = _rb.position;
+        MovementUtils.PosAdjustY(ref pos, WalkSpeed);
+        _rb.position = pos;
     }
+
+    // public void AlignPosX(Rigidbody2D rb)
+    // {
+    //     Vector2 pos = rb.position;
+    //     MovementUtils.PosAdjustX(ref pos, WalkSpeed);
+    //     rb.position = pos;
+    // }
+
+    // public void AlignPosY(Rigidbody2D rb)
+    // {
+    //     Vector2 pos = rb.position;
+    //     MovementUtils.PosAdjustY(ref pos, WalkSpeed);
+    //     rb.position = pos;
+    // }
 }
