@@ -4,7 +4,7 @@ public class ClimbState : IState
 {
     private readonly PlayerController _player;
     private readonly PlayerInput _playerInput;
-    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerSensor _playerSensor;
     private readonly PlayerAnimation _playerAnimation;
     private readonly Rigidbody2D _rb;
     private readonly PlayerClimb _playerClimb;
@@ -18,7 +18,7 @@ public class ClimbState : IState
     {
         _player = player ?? throw new System.ArgumentNullException(nameof(player));
         _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
-        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _playerSensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
         _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
         _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerClimb = player.GetComponent<PlayerClimb>();
@@ -31,10 +31,10 @@ public class ClimbState : IState
 
     public void Update()
     {
-        _isGrounded = _playerCensor._isGrounded;
-        _isOnLadder = _playerCensor._isOnLadder;
-        _isInLadderAnd = _playerCensor._isInLadderAnd;
-        _isInLadderOr = _playerCensor._isInLadderOr;
+        _isGrounded = _playerSensor._isGrounded;
+        _isOnLadder = _playerSensor._isOnLadder;
+        _isInLadderAnd = _playerSensor._isInLadderAnd;
+        _isInLadderOr = _playerSensor._isInLadderOr;
 
         float moveX = _playerInput.MoveInput.x;
         float moveY = _playerInput.MoveInput.y;

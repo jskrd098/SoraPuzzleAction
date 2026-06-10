@@ -4,7 +4,8 @@ public class WalkState : IState
 {
     private readonly PlayerController _player;
     private readonly PlayerInput _playerInput;
-    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerSensor _playerSensor;
+    private readonly MovementDirectionResolver _directionResolver;
     private readonly PlayerAnimation _playerAnimation;
     private readonly Rigidbody2D _rb;
     private readonly PlayerWalk _playerWalk;
@@ -18,7 +19,8 @@ public class WalkState : IState
     {
         _player = player ?? throw new System.ArgumentNullException(nameof(player));
         _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
-        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _playerSensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
+        _directionResolver = new MovementDirectionResolver();
         _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
         _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerWalk = player.GetComponent<PlayerWalk>();
@@ -31,16 +33,15 @@ public class WalkState : IState
 
     public void Update()
     {
-        _isGrounded = _playerCensor._isGrounded;
-        _isOnLadder = _playerCensor._isOnLadder;
-        _isInLadderAnd = _playerCensor._isInLadderAnd;
-        _isInLadderOr = _playerCensor._isInLadderOr;
+        _isGrounded = _playerSensor._isGrounded;
+        _isOnLadder = _playerSensor._isOnLadder;
+        _isInLadderAnd = _playerSensor._isInLadderAnd;
+        _isInLadderOr = _playerSensor._isInLadderOr;
 
-        float moveX = _playerInput.MoveInput.x;
-        float moveY = _playerInput.MoveInput.y;
+        Vector2Int moveDir = _directionResolver.ResolveDirection(_player, _playerInput.MoveInput);
 
         // Climb
-        if ((Mathf.Abs(moveY) > 0) && _isInLadderAnd)
+        if (moveDir.y > 0 && _isInLadderAnd)
         {
             if (Mathf.Approximately(_rb.position.x, Mathf.Round(_rb.position.x)))
             {
@@ -49,13 +50,13 @@ public class WalkState : IState
         }
 
         // Walk
-        if ((Mathf.Abs(moveX) > 0) && (_isGrounded || _isOnLadder))
+        if (moveDir.x != 0 && (_isGrounded || _isOnLadder))
         {
             _playerWalk.Walk(_rb, _playerInput.MoveInput);
         }
 
         // Idle
-        if ((Mathf.Abs(moveX) == 0) && (_isGrounded || _isOnLadder))
+        if (moveDir.x == 0 && (_isGrounded || _isOnLadder))
         {
             _player._stateMachine.TransitionTo(_player._stateMachine.idleState);
         }

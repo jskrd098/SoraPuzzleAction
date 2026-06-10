@@ -16,18 +16,4 @@ public class PlayerWalk : MonoBehaviour, IWalkable
         MovementUtils.PosAdjustY(ref pos, WalkSpeed);
         _rb.position = pos;
     }
-
-    // public void AlignPosX(Rigidbody2D rb)
-    // {
-    //     Vector2 pos = rb.position;
-    //     MovementUtils.PosAdjustX(ref pos, WalkSpeed);
-    //     rb.position = pos;
-    // }
-
-    // public void AlignPosY(Rigidbody2D rb)
-    // {
-    //     Vector2 pos = rb.position;
-    //     MovementUtils.PosAdjustY(ref pos, WalkSpeed);
-    //     rb.position = pos;
-    // }
 }

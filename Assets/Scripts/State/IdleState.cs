@@ -4,7 +4,7 @@ public class IdleState : IState
 {
     private readonly PlayerController _player;
     private readonly PlayerInput _playerInput;
-    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerSensor _playerSensor;
     private readonly PlayerAnimation _playerAnimation;
     private readonly Rigidbody2D _rb;
 
@@ -16,7 +16,7 @@ public class IdleState : IState
     {
         _player = player ?? throw new System.ArgumentNullException(nameof(player));
         _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
-        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _playerSensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
         _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
         _playerAnimation = player.GetComponent<PlayerAnimation>();
     }
@@ -28,16 +28,14 @@ public class IdleState : IState
 
     public void Update()
     {
-        _isGrounded = _playerCensor._isGrounded;
-        _isOnLadder = _playerCensor._isOnLadder;
-        _isInLadderAnd = _playerCensor._isInLadderAnd;
-    
-
+        _isGrounded = _playerSensor._isGrounded;
+        _isOnLadder = _playerSensor._isOnLadder;
+        _isInLadderAnd = _playerSensor._isInLadderAnd;
         float moveX = _playerInput.MoveInput.x;
         float moveY = _playerInput.MoveInput.y;
 
         // Idle
-        if (Mathf.Abs(moveX) == 0)
+        if (Mathf.Abs(moveX) == 0 && Mathf.Abs(moveY) == 0)
         {
             _rb.linearVelocity = new Vector2(0.0f, _rb.linearVelocityY);
         }

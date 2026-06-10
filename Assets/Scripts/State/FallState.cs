@@ -3,7 +3,7 @@ using UnityEngine;
 public class FallState : IState
 {
     private readonly PlayerController _player;
-    private readonly PlayerCensor _playerCensor;
+    private readonly PlayerSensor _playerSensor;
     private readonly PlayerAnimation _playerAnimation;
     private readonly Rigidbody2D _rb;
     private readonly PlayerFall _playerFall;
@@ -14,7 +14,7 @@ public class FallState : IState
     public FallState(PlayerController player)
     {
         _player = player ?? throw new System.ArgumentNullException(nameof(player));
-        _playerCensor = player._playerCensor ?? throw new System.ArgumentNullException(nameof(player._playerCensor));
+        _playerSensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
         _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
         _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerFall = player.GetComponent<PlayerFall>();
@@ -27,8 +27,8 @@ public class FallState : IState
 
     public void Update()
     {
-        _isGrounded = _playerCensor._isGrounded;
-        _isOnLadder = _playerCensor._isOnLadder;
+        _isGrounded = _playerSensor._isGrounded;
+        _isOnLadder = _playerSensor._isOnLadder;
 
         float moveX = _player._playerInput.MoveInput.x;
 

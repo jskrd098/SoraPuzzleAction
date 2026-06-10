@@ -13,7 +13,6 @@ public class PlayerInput : MonoBehaviour
 
     public void ReadInput()
     {
-        // MoveInput = _inputAction.Player.Move.ReadValue<Vector2>();
         MoveInput = new Vector2Int(
             Mathf.RoundToInt(_inputAction.Player.Move.ReadValue<Vector2>().x),
             Mathf.RoundToInt(_inputAction.Player.Move.ReadValue<Vector2>().y)
