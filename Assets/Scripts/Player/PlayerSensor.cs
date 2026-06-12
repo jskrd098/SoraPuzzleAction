@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerSensor : MonoBehaviour
 {
+    private readonly PlayerController _player;
+    private readonly MovementDirectionResolver _movementDirectionResolver;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _ladderLayer;
     [SerializeField] private Vector2 _groundCheckSize; // 接地判定用BoxColliderのサイズ
@@ -19,8 +21,10 @@ public class PlayerSensor : MonoBehaviour
     public bool _isInLadderOr { get; private set; }
 
     // コンストラクタ
-    public PlayerSensor()
+    public PlayerSensor(PlayerController player)
     {
+        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _movementDirectionResolver = new MovementDirectionResolver();
         _isGrounded = false;
         _isOnLadder = false;
         _isInLadderAnd = false;
@@ -30,6 +34,7 @@ public class PlayerSensor : MonoBehaviour
     // PlayerController の Fixed Update から毎フレーム呼び出される
     public void SensorUpdate()
     {
+        _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.MoveInput);
         _isGrounded = IsGrounded();
         _isOnLadder = IsOnLadder();
         _isInLadderAnd = IsInLadderAnd();
@@ -50,6 +55,9 @@ public class PlayerSensor : MonoBehaviour
     /// <summary>
     /// 梯子の頂上にいるかの判定 
     /// </summary>
+    /// <returns>
+    /// 梯子の頂上にいる場合:true、そうでない場合:false
+    /// </returns>
     public bool IsOnLadder()
     {
         // Playerの中心位置
@@ -94,16 +102,6 @@ public class PlayerSensor : MonoBehaviour
         return hit.collider != null;
     }
 
-    // public bool CanMove(Vector2Int dir)
-    // {
-    //     // Playerの中心位置から判定先の位置を計算
-    //     target = (Vector2)transform.position + dir;
-    //     // PlayerのColliderのサイズを少し小さくしたサイズを判定用のサイズとする
-    //     checkSize = _bodyCollider.bounds.size * checkScale;
-    //     // 判定先の位置が移動可能かを判定
-    //     return !Physics2D.OverlapBox(target, checkSize, 0f, _groundLayer);
-    // }
-
 #if UNITY_EDITOR
     // デバッグ用: シーンビューに判定範囲を表示(ヒエラルキー上で選択状態にすること)
     private void OnDrawGizmos()
@@ -118,12 +116,6 @@ public class PlayerSensor : MonoBehaviour
         Vector2 originR = (Vector2)transform.position + _ladderCheckOriginR;
         Gizmos.DrawLine(originL, originL + Vector2.up * _ladderCheckDistance);
         Gizmos.DrawLine(originR, originR + Vector2.up * _ladderCheckDistance);
-        // // 移動可否判定の範囲を青色のワイヤーフレームで表示
-        // Gizmos.color = Color.blue;
-        // if (_bodyCollider == null) return;
-        // Vector2 target = (Vector2)transform.position + Vector2.right * _bodyCollider.bounds.size.x;
-        // Vector2 checkSize = _bodyCollider.bounds.size * checkScale;
-        // Gizmos.DrawWireCube(target, checkSize);
     }
 #endif
 }

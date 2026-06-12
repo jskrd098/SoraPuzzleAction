@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     public StateMachine _stateMachine;
     public Rigidbody2D _rb;
     // public BoxCollider2D _collider2D;
-
     // public float InputEpsilon {get; private set;} // 入力の有効判定に使用する小さな値
 
     void Start()
