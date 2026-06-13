@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
         _movementSensor = GetComponent<MovementSensor>();
         _playerAnimation = GetComponent<PlayerAnimation>();
         _rb = GetComponent<Rigidbody2D>();
-        // _collider2D = GetComponent<BoxCollider2D>();
         _stateMachine = new StateMachine(this);
         _stateMachine.Initialize(_stateMachine.idleState);
     }
