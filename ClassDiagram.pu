@@ -1,0 +1,381 @@
+@startuml ClassDiagram
+
+class PlayerController {
+  -_playerInput: IPlayerInput
+  -_playerSensor: ICharacterSensor
+  -_playerStateMachine: ICharacterStateMachine
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  -_rb: Rigidbody2D
+  -_playerWalk: IWalkable
+  -_playerClimb: IClimbable
+  -_playerFall: IFallable
+  -_playerJump: IJumpable
+  -_playerPush: IPushable
+  -_playerGoal: IGoalable
+  -_playerMiss: IMissable
+}
+
+PlayerController --> IPlayerInput
+PlayerController --> ICharacterSensor
+PlayerController --> ICharacterStateMachine
+PlayerController --> ICharacterAnimation
+PlayerController --> ICharacterAudio
+PlayerController --> IWalkable
+PlayerController --> IClimbable
+PlayerController --> IFallable
+PlayerController --> IJumpable
+PlayerController --> IPushable
+PlayerController --> IGoalable
+PlayerController --> IMissable
+
+interface IPlayerInput {
+  +moveInput{ get; }: Vector2
+  +jumpInput{ get; }: bool
+  +ReadInput(): void
+}
+
+class PlayerInput {
+  -_inputAction: InputSystem_Actions
+  +moveInput{ get; }: Vector2
+  +jumpInput{ get; }: bool
+  +Awake(): void
+  +OnEnable(): void
+  +OnDisable(): void
+  +ReadInput(): void
+}
+
+PlayerInput ..|> IPlayerInput
+
+interface ICharacterSensor {
+  +IsGrounded(): bool
+  +IsOnLadder(): bool
+  +IsInLadder(): bool
+  +CanMove(Vector2 direction): bool
+  +SensorUpdate(): void
+}
+
+PlayerSensor ..|> ICharacterSensor
+
+class PlayerSensor {
+  ' -_groundSensor: GroundSensor
+  ' -_ladderSensor: LadderSensor
+  ' -_movementSensor: MovementSensor
+  +SensorUpdate(): void
+  ' +IsGrounded(): bool
+  ' +IsOnLadder(): bool
+  ' +IsInLadder(): bool
+  ' +CanMove(Vector2 direction): bool
+}
+
+interface ISensor {
+  +SensorUpdate(): void
+}
+
+PlayerSensor --> ISensor
+
+class GroundSensor {
+  +SensorUpdate(): void
+  -IsOnGrounded(): bool
+}
+
+class LadderSensor {
+  +SensorUpdate(): void
+  -IsOnLadder(): bool
+  -IsInLadder(): bool
+}
+
+class MovementSensor {
+  +SensorUpdate(): void
+  -CanMove(Vector2 direction): bool
+  -CanMoveTo(Vector2 targetPosition): bool
+}
+
+GroundSensor ..|> ISensor
+LadderSensor ..|> ISensor
+MovementSensor ..|> ISensor
+
+interface ICharacterStateMachine {
+  +Initialize(IState startingState): void
+  +TransitionTo(IState nextState): void
+  +Update(): void
+}
+
+class PlayerStateMachine {
+  +CurrentState: IState
+  ' -idleState: IdleState
+  ' -walkState: WalkState
+  ' -climbState: ClimbState
+  ' -jumpState: JumpState
+  ' -fallState: FallState
+  ' -pushState: PushState
+  ' -PlayerState(PlayerController player)
+  +Initialize(IState startingState): void
+  +TransitionTo(IState nextState): void
+  +Update(): void
+}
+
+PlayerStateMachine ..|> ICharacterStateMachine
+PlayerStateMachine --> IState
+
+interface IState {
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class IdleState {
+  -_playerInput: IPlayerInput
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  +IdleState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class WalkState {
+  -_playerInput: IPlayerInput
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +WalkState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class ClimbState {
+  -_playerInput: IPlayerInput
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +ClimbState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class JumpState {
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +JumpState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class FallState {
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +FallState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class PushState {
+  -_playerSensor: ICharacterSensor
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +PushState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class GoalState {
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +GoalState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+class MissState {
+  -_playerAnimation: ICharacterAnimation
+  -_playerAudio: ICharacterAudio
+  +MissState()
+  +Enter(): void
+  +Update(): void
+  +Exit(): void
+}
+
+IState <|.. IdleState
+IState <|.. WalkState
+IState <|.. ClimbState
+IState <|.. JumpState
+IState <|.. FallState
+IState <|.. PushState
+IState <|.. GoalState
+IState <|.. MissState
+
+ICharacterAnimation <-- IdleState
+ICharacterAnimation <-- WalkState
+ICharacterAnimation <-- ClimbState
+ICharacterAnimation <-- JumpState
+ICharacterAnimation <-- FallState
+ICharacterAnimation <-- PushState
+ICharacterAnimation <-- GoalState
+ICharacterAnimation <-- MissState
+
+interface IPositionAligner {
+  +AlignPsX(Rigidbody2D rb): void
+  +AlignPsY(Rigidbody2D rb): void
+}
+
+class PositionAligner {
+  +AlignPsX(Rigidbody2D rb): void
+  +AlignPsY(Rigidbody2D rb): void
+}
+
+PositionAligner ..|> IPositionAligner
+
+interface IWalkable {
+  +walkSpeed { get; }: float
+  +Walk(Rigidbody2D rb, Vector2 direction): void
+}
+
+class PlayerWalk {
+  +walkSpeed { get; }: float
+  +Walk(Rigidbody2D rb, Vector2 direction): void
+}
+
+PlayerWalk ..|> IWalkable
+PlayerWalk --> IPositionAligner
+
+interface IClimbable {
+  +climbSpeed { get; }: float
+  +Climb(Rigidbody2D rb, Vector2 direction): void
+}
+
+class PlayerClimb {
+  +climbSpeed { get; }: float
+  +Climb(Rigidbody2D rb, Vector2 direction): void
+}
+
+PlayerClimb ..|> IClimbable
+PlayerClimb --> IPositionAligner
+
+interface IFallable {
+  +fallSpeed { get; }: float
+  +Fall(Rigidbody2D rb): void
+}
+
+class PlayerFall {
+  +fallSpeed { get; }: float
+  +Fall(Rigidbody2D rb): void
+}
+
+PlayerFall ..|> IFallable
+PlayerFall --> IPositionAligner
+
+interface IJumpable {
+  +jumpPower { get; }: float
+  +Jump(Rigidbody2D rb): void
+}
+
+class PlayerJump {
+  +jumpPower { get; }: float
+  +Jump(Rigidbody2D rb): void
+}
+
+PlayerJump ..|> IJumpable
+
+interface IPushable {
+  +pushSpeed { get; }: float
+  +Push(Rigidbody2D rb, Vector2 direction): void
+}
+
+class PlayerPush {
+  +pushSpeed { get; }: float
+  +Push(Rigidbody2D rb, Vector2 direction): void
+}
+
+PlayerPush ..|> IPushable
+PlayerPush --> IPositionAligner
+
+interface IGoalable {
+  +Goal(): void
+}
+
+PlayerGoal --> IPositionAligner
+
+class PlayerGoal {
+  +Goal(): void
+}
+
+PlayerGoal ..|> IGoalable
+
+interface IMissable {
+  +Miss(): void
+}
+
+class PlayerMiss {
+  +Miss(): void
+}
+
+PlayerMiss ..|> IMissable
+
+interface ICharacterAnimation {
+  +Play(): void
+  +Stop(): void
+}
+
+class PlayerAnimation {
+  -anim: Animator
+  -hashPlayerIdleAnim: int
+  -hashPlayerWalkAnim: int
+  -hashPlayerClimbAnim: int
+  -hashPlayerFallAnim: int
+  -hashPlayerJumpAnim: int
+  -hashPlayerPushAnim: int
+  -hashPlayerGoalAnim: int
+  -hashPlayerMissAnim: int
+  +SetIdleAnim(bool value): void
+  +SetWalkAnim(bool value): void
+  +SetClimbAnim(bool value): void
+  +SetFallAnim(bool value): void
+  +SetJumpAnim(bool value): void
+  +SetPushAnim(bool value): void
+  +SetGoalAnim(bool value): void
+  +SetMissAnim(bool value): void
+  +Play(): void
+  +Stop(): void
+}
+
+PlayerAnimation ..|> ICharacterAnimation
+
+interface ICharacterAudio {
+  +Play(): void
+  +Stop(): void
+}
+
+class PlayerAudio {
+  -aud: AudioSource
+  -hashPlayerIdleAud: int
+  -hashPlayerWalkAud: int
+  -hashPlayerClimbAud: int
+  -hashPlayerFallAud: int
+  -hashPlayerJumpAud: int
+  -hashPlayerPushAud: int
+  -hashPlayerGoalAud: int
+  -hashPlayerMissAud: int
+  +SetIdleAud(bool value): void
+  +SetWalkAud(bool value): void
+  +SetClimbAud(bool value): void
+  +SetFallAud(bool value): void
+  +SetJumpAud(bool value): void
+  +SetPushAud(bool value): void
+  +SetGoalAud(bool value): void
+  +SetMissAud(bool value): void
+  +Play(): void
+  +Stop(): void
+}
+
+PlayerAudio ..|> ICharacterAudio
+
+@enduml

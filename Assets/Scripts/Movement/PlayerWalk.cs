@@ -2,18 +2,24 @@ using UnityEngine;
 
 public class PlayerWalk : MonoBehaviour, IWalkable
 {
-    [SerializeField] private float _walkSpeed = 5f;
-    public float WalkSpeed => _walkSpeed;
+    [SerializeField] private float WalkSpeed = 5f;
+    public float walkSpeed => WalkSpeed;
 
-    public void Walk(Rigidbody2D _rb, Vector2 direction)
+    public void Walk(Rigidbody2D rb, Vector2 direction)
     {
-        Vector2 pos;
-        
-        _rb.linearVelocity = new Vector2(direction.x * _walkSpeed, _rb.linearVelocityY);
+        if (rb == null) return;
+        // キャラの移動
+        rb.linearVelocity = new Vector2(direction.x * walkSpeed, rb.linearVelocityY);
+        // 入力キーに応じてキャラの向きを変える
         if (direction.x != 0) transform.localScale = new Vector3(Mathf.Sign(direction.x), 1, 1);
-        
-        pos = _rb.position;
-        MovementUtils.PosAdjustY(ref pos, WalkSpeed);
-        _rb.position = pos;
+        // Y座標調整
+        AlignPos(rb);
+    }
+
+    private void AlignPos(Rigidbody2D rb)
+    {
+        Vector2 pos = rb.position;
+        MovementUtils.PosAdjustY(ref pos, walkSpeed);
+        rb.position = pos;
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : MonoBehaviour, ICharacterAnimation
 {
     private Animator _anim;
     private int _hashPlayerIdle;

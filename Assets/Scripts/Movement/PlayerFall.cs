@@ -3,17 +3,21 @@ using UnityEngine;
 public class PlayerFall : MonoBehaviour, IFallable
 {
     [SerializeField] private float _fallSpeed = 6f;
-    public float FallSpeed => _fallSpeed;
+    public float fallSpeed => _fallSpeed;
     
-    public void Fall(Rigidbody2D _rb)
+    public void Fall(Rigidbody2D rb)
     {
-        _rb.linearVelocity = new Vector2(0.0f, -_fallSpeed);
+        if (rb == null) return;
+        // キャラの移動
+        rb.linearVelocity = new Vector2(0.0f, -_fallSpeed);
+        // X座標調整
+        AlignPos(rb);
     }
 
-    public void AlignPosY(Rigidbody2D rb)
+    private void AlignPos(Rigidbody2D rb)
     {
         Vector2 pos = rb.position;
-        MovementUtils.PosAdjustY(ref pos, FallSpeed);
+        MovementUtils.PosAdjustX(ref pos, fallSpeed);
         rb.position = pos;
     }
 }

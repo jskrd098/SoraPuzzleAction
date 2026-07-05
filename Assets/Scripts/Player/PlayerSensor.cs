@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class PlayerSensor : MonoBehaviour
+public class PlayerSensor : MonoBehaviour, ICharacterSensor
 {
-    private readonly PlayerController _player;
-    private readonly MovementDirectionResolver _movementDirectionResolver;
+    private PlayerController _player;
+    private MovementDirectionResolver _movementDirectionResolver;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _ladderLayer;
     [SerializeField] private Vector2 _groundCheckSize; // 接地判定用BoxColliderのサイズ
@@ -13,35 +13,49 @@ public class PlayerSensor : MonoBehaviour
     [SerializeField] private Vector2 _ladderCheckOriginR; // 梯子判定用RayCast始点(右側)
     [SerializeField] private BoxCollider2D _bodyCollider;
     [SerializeField] private float checkScale = 0.9f;
-    private Vector2 target;
-    private Vector2 checkSize;
-    public bool _isGrounded { get; private set; }
+    // public bool _isGrounded { get; private set; }
     public bool _isOnLadder { get; private set; }
     public bool _isInLadderAnd { get; private set; }
     public bool _isInLadderOr { get; private set; }
 
-    // コンストラクタ
-    public PlayerSensor(PlayerController player)
+    private void Awake()
     {
-        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _player = GetComponent<PlayerController>();
         _movementDirectionResolver = new MovementDirectionResolver();
-        _isGrounded = false;
+        // _isGrounded = false;
         _isOnLadder = false;
         _isInLadderAnd = false;
         _isInLadderOr = false;
     }
 
-    // PlayerController の Fixed Update から毎フレーム呼び出される
+    /// <summary>
+    /// センサーの更新を行う
+    /// </summary>
     public void SensorUpdate()
     {
-        _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.MoveInput);
-        _isGrounded = IsGrounded();
+        if (_player == null)
+        {
+            _player = GetComponent<PlayerController>();
+        }
+
+        if (_player != null && _player._playerInput != null)
+        {
+            _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.moveInput);
+        }
+
+        // _isGrounded = IsGrounded();
+        IsGrounded();
         _isOnLadder = IsOnLadder();
         _isInLadderAnd = IsInLadderAnd();
         _isInLadderOr = IsInLadderOr();
     }
 
-    // 地面との接触判定
+    /// <summary>
+    /// 地面との接触判定を行う
+    /// </summary>
+    /// <returns>
+    /// 接地している場合:true、そうでない場合:false
+    /// </returns>
     public bool IsGrounded()
     {
         // Playerの中心位置
@@ -76,7 +90,31 @@ public class PlayerSensor : MonoBehaviour
         }
     }
 
-    // 梯子の中にいるかの判定
+    public bool IsInLadder()
+    {
+        return _isInLadderAnd || _isInLadderOr;
+    }
+
+    public bool CanMove(Vector2 direction)
+    {
+        var collider = _bodyCollider ?? GetComponent<BoxCollider2D>();
+        if (collider == null)
+        {
+            return true;
+        }
+
+        Vector2 targetPosition = (Vector2)transform.position + direction.normalized * 1f;
+        Vector2 size = collider.size * checkScale;
+        Collider2D hit = Physics2D.OverlapBox(targetPosition, size, 0f, _groundLayer);
+        return hit == null;
+    }
+
+    /// <summary>
+    /// 梯子の中にいるかの判定
+    /// </summary>
+    /// <returns>
+    /// 梯子の中にいる場合:true、そうでない場合:false
+    /// </returns>
     private bool IsInLadderAnd() { return IsInLadderL() && IsInLadderR(); }
     private bool IsInLadderOr() { return IsInLadderL() || IsInLadderR(); }
     private bool IsInLadderL()
@@ -103,7 +141,9 @@ public class PlayerSensor : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    // デバッグ用: シーンビューに判定範囲を表示(ヒエラルキー上で選択状態にすること)
+    /// <summary>
+    /// デバッグ用: シーンビューに判定範囲を表示する(注：ヒエラルキー上で選択状態にすること) 
+    /// </summary>
     private void OnDrawGizmos()
     {
         // 接地判定の範囲を緑色のワイヤーフレームで表示

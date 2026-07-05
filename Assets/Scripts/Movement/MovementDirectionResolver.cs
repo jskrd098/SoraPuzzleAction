@@ -16,12 +16,12 @@ public class MovementDirectionResolver : IMovementDirectionResolver
 
     private bool CanMoveVertical(PlayerController player, int dir)
     {
-        return player._movementSensor.CanMove(Vector2Int.up * dir);
+        return player._playerSensor.CanMove(Vector2Int.up * dir);
     }
 
     private bool CanMoveHorizontal(PlayerController player, int dir)
     {
-        return player._movementSensor.CanMove(Vector2Int.right * dir);
+        return player._playerSensor.CanMove(Vector2Int.right * dir);
     }
 }
 
