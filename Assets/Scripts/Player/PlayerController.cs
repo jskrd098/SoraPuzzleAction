@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        // 先にすべてのコンポーネントを初期化
+        // すべてのコンポーネントを初期化
         _playerInput = GetComponent<IPlayerInput>() ?? gameObject.AddComponent<PlayerInput>();
         _playerSensor = GetComponent<ICharacterSensor>() ?? gameObject.AddComponent<PlayerSensor>();
         _playerAnimation = GetComponent<ICharacterAnimation>() ?? gameObject.AddComponent<PlayerAnimation>();
@@ -40,19 +40,18 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>() ?? gameObject.AddComponent<Rigidbody2D>();
         _playerWalk = GetComponent<IWalkable>() ?? gameObject.AddComponent<PlayerWalk>();
         _playerIdle = GetComponent<IIdleable>() ?? gameObject.AddComponent<PlayerIdle>();
-        _playerClimb = GetComponent<IClimbable>();
+        _playerClimb = GetComponent<IClimbable>() ?? gameObject.AddComponent<PlayerClimb>();
         _playerFall = GetComponent<IFallable>() ?? gameObject.AddComponent<PlayerFall>();
         _playerJump = GetComponent<IJumpable>();
         _playerPush = GetComponent<IPushable>();
         _playerGoal = GetComponent<IGoalable>();
         _playerMiss = GetComponent<IMissable>();
 
-        // その後で状態機械を初期化
+        // StateMachineを初期化
         if (_playerStateMachine is PlayerStateMachine playerStateMachine)
         {
             playerStateMachine.InitializeStates(this);
             _playerStateMachine.Initialize(playerStateMachine.idleState);
-            // Debug.Log("PlayerController initialized state machine.");
         }
     }
 
@@ -63,10 +62,6 @@ public class PlayerController : MonoBehaviour
     {
         // Read Input
         _playerInput?.ReadInput();
-        if (_playerInput != null)
-        {
-            // Debug.Log($"Input move={_playerInput.moveInput} jump={(_playerInput as PlayerInput)?.jumpInput}");
-        }
     }
 
     /// <summary>
@@ -74,12 +69,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        // Update Sensor and State Machine
         _playerSensor?.SensorUpdate();
         _playerStateMachine?.Update();
-        // if (_playerSensor is PlayerSensor sensor)
-        // {
-        //     Debug.Log($"Sensor grounded={sensor.IsGrounded()} onLadder={sensor.IsOnLadder()} inLadder={sensor.IsInLadder()}");
-        // }
     }
 }

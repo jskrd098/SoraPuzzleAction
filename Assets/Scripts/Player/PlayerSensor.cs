@@ -14,18 +14,18 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
     [SerializeField] private BoxCollider2D _bodyCollider;
     [SerializeField] private float checkScale = 0.9f;
     // public bool _isGrounded { get; private set; }
-    public bool _isOnLadder { get; private set; }
-    public bool _isInLadderAnd { get; private set; }
-    public bool _isInLadderOr { get; private set; }
+    // public bool _isOnLadder { get; private set; }
+    // public bool _isInLadderAnd { get; private set; }
+    // public bool _isInLadderOr { get; private set; }
 
     private void Awake()
     {
         _player = GetComponent<PlayerController>();
         _movementDirectionResolver = new MovementDirectionResolver();
         // _isGrounded = false;
-        _isOnLadder = false;
-        _isInLadderAnd = false;
-        _isInLadderOr = false;
+        // _isOnLadder = false;
+        // _isInLadderAnd = false;
+        // _isInLadderOr = false;
     }
 
     /// <summary>
@@ -45,9 +45,9 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
 
         // _isGrounded = IsGrounded();
         IsGrounded();
-        _isOnLadder = IsOnLadder();
-        _isInLadderAnd = IsInLadderAnd();
-        _isInLadderOr = IsInLadderOr();
+        IsOnLadder();
+        IsInLadderAnd();
+        IsInLadderOr();
     }
 
     /// <summary>
@@ -76,23 +76,17 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
     {
         // Playerの中心位置
         Vector2 position = (Vector2)transform.position;
-
-        if (_isInLadderOr)
-        {
-            return false; // 梯子の頂上にいる場合のみ OnLadder を True とするため、IsInLadder が True だと OnLadder は False になる
-        }
-        else
-        {
-            // Playerの中心位置から指定したオフセット分ずらした位置を中心にする
-            Vector2 checkPosition = position + _groundCheckOffset;
-            // 四角形の範囲内に梯子があるかを判定
-            return Physics2D.OverlapBox(checkPosition, _groundCheckSize, 0f, _ladderLayer);
-        }
+        // IsInLadderがTrueの場合、OnLadderはFalseとする
+        if (IsInLadderOr()) return false;
+        // Playerの中心位置から指定したオフセット分ずらした位置を中心にする
+        Vector2 checkPosition = position + _groundCheckOffset;
+        // 四角形の範囲内に梯子があるかを判定
+        return Physics2D.OverlapBox(checkPosition, _groundCheckSize, 0f, _ladderLayer);
     }
 
     public bool IsInLadder()
     {
-        return _isInLadderAnd || _isInLadderOr;
+        return IsInLadderAnd() || IsInLadderOr();
     }
 
     public bool CanMove(Vector2 direction)

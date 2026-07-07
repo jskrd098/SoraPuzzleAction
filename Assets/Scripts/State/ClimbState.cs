@@ -3,56 +3,46 @@ using UnityEngine;
 public class ClimbState : IState
 {
     private readonly PlayerController _player;
-    // private readonly PlayerInput _playerInput;
-    // private readonly PlayerSensor _playerSensor;
-    // private readonly PlayerAnimation _playerAnimation;
-    // private readonly Rigidbody2D _rb;
-    // private readonly PlayerClimb _playerClimb;
-
-    // private bool _isGrounded;
-    // private bool _isOnLadder;
-    // private bool _isInLadderAnd;
-    // private bool _isInLadderOr;
-
     private readonly IPlayerInput _input;
     private readonly ICharacterSensor _sensor;
     private readonly ICharacterAnimation _animation;
-    // private readonly Rigidbody2D _rb;
-    // private bool _isGrounded;
-    // private bool _isOnLadder;
-    // private bool _isInLadderAnd;
-
+    private readonly IClimbable _climbable;
     private enum TransitionType
     {
-        None,
         Idle,
         Walk,
+        Climb,
         Fall,
-        Jump,
         Push,
         Goal,
         Miss
     }
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="player"></param>
+    /// <exception cref="System.ArgumentNullException"></exception>
     public ClimbState(PlayerController player)
     {
         _player = player ?? throw new System.ArgumentNullException(nameof(player));
         _input = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
         _sensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
         _animation = player._playerAnimation ?? throw new System.ArgumentNullException(nameof(player._playerAnimation));
-        // _playerInput = player._playerInput ?? throw new System.ArgumentNullException(nameof(player._playerInput));
-        // _playerSensor = player._playerSensor ?? throw new System.ArgumentNullException(nameof(player._playerSensor));
-        // _rb = player._rb ?? throw new System.ArgumentNullException(nameof(player._rb));
-        // _playerAnimation = player.GetComponent<PlayerAnimation>();
-        // _playerClimb = player.GetComponent<PlayerClimb>();
+        _climbable = player._playerClimb ?? throw new System.ArgumentNullException(nameof(player._playerClimb));
     }
 
+    /// <summary>
+    /// 状態に入った際の処理を行う
+    /// </summary>
     public void Enter()
     {
         _animation?.SetClimb(true);
-        // _playerAnimation?.SetClimb(true);
     }
 
+    /// <summary>
+    /// 毎フレームの更新処理を行う
+    /// </summary>
     public void Update()
     {
         switch (EvaluateTransition())
@@ -66,9 +56,6 @@ public class ClimbState : IState
             case TransitionType.Fall:
                 _player._playerStateMachine.TransitionTo(_player._playerStateMachine.fallState);
                 break;
-            case TransitionType.Jump:
-                _player._playerStateMachine.TransitionTo(_player._playerStateMachine.jumpState);
-                break;
             case TransitionType.Push:
                 _player._playerStateMachine.TransitionTo(_player._playerStateMachine.pushState);
                 break;
@@ -78,47 +65,75 @@ public class ClimbState : IState
             case TransitionType.Miss:
                 _player._playerStateMachine.TransitionTo(_player._playerStateMachine.missState);
                 break;
+            case TransitionType.Climb:
+                _climbable?.Climb(_player._rb, _input.moveInput);
+                break;
         }
     }
 
+    /// <summary>
+    /// 状態から抜ける際の処理を行う
+    /// </summary>
     public void Exit()
     {
         _animation?.SetClimb(false);
-        // _playerAnimation?.Play();
-        // _playerAnimation?.SetClimb(false);
     }
 
+    /// <summary>
+    /// 状態遷移の評価を行う
+    /// </summary>
+    /// <returns>
+    /// TransitionType: 遷移先の状態を示す列挙型
+    /// </returns>
     private TransitionType EvaluateTransition()
     {
         if (ShouldTransitionToIdle()) return TransitionType.Idle;
         if (ShouldTransitionToWalk()) return TransitionType.Walk;
         if (ShouldTransitionToFall()) return TransitionType.Fall;
-        if (ShouldTransitionToJump()) return TransitionType.Jump;
         if (ShouldTransitionToPush()) return TransitionType.Push;
         if (ShouldTransitionToGoal()) return TransitionType.Goal;
         if (ShouldTransitionToMiss()) return TransitionType.Miss;
-        return TransitionType.None;
+        return TransitionType.Climb;
     }
 
+    /// <summary>
+    /// Idle状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToIdle()
     {
-        return _input.moveInput.x == 0;
+        // return _input.moveInput.x == 0 &&
+        //        (_sensor.IsGrounded() || _sensor.IsOnLadder());
+
+        if (_input.moveInput.x == 0 && (_sensor.IsGrounded() || _sensor.IsOnLadder()))
+        {
+            Debug.Log("ClimbState: ShouldTransitionToIdle() => true");
+            return true;   
+        }
+        return false;
     }
 
+    /// <summary>
+    /// Walk状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToWalk()
     {
         return _input.moveInput.x != 0 &&
-               _sensor.IsGrounded() &&
+               (_sensor.IsGrounded() || _sensor.IsOnLadder()) &&
                _sensor.CanMove(new Vector2(_input.moveInput.x, 0));
     }
 
-    private bool ShouldTransitionToClimb()
-    {
-        return _input.moveInput.y != 0 &&
-               _sensor.IsInLadder() &&
-               _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
-    }
-
+    /// <summary>
+    /// Fall状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToFall()
     {
         return !_sensor.IsGrounded() &&
@@ -126,23 +141,35 @@ public class ClimbState : IState
                !_sensor.IsInLadder();
     }
 
-    private bool ShouldTransitionToJump()
-    {
-        return _input.jumpInput &&
-               _sensor.IsGrounded();
-    }
-
+    /// <summary>
+    /// Push状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToPush()
     {
         return false;
     }
 
+    /// <summary>
+    /// Goal状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToGoal()
     {
         // return _player.IsGoalReached;
         return false;
     }
 
+    /// <summary>
+    /// Miss状態へ遷移する条件を評価する
+    /// </summary>
+    /// <returns>
+    /// bool: 遷移するかどうかを示す真偽値
+    /// </returns>
     private bool ShouldTransitionToMiss()
     {
         // return _player.IsMissed;

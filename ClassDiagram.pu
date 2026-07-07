@@ -7,6 +7,7 @@ class PlayerController {
   -_playerAnimation: ICharacterAnimation
   -_playerAudio: ICharacterAudio
   -_rb: Rigidbody2D
+  -_playerIdle: IdleState
   -_playerWalk: IWalkable
   -_playerClimb: IClimbable
   -_playerFall: IFallable
@@ -21,6 +22,7 @@ PlayerController --> ICharacterSensor
 PlayerController --> ICharacterStateMachine
 PlayerController --> ICharacterAnimation
 PlayerController --> ICharacterAudio
+PlayerController --> IIdleable
 PlayerController --> IWalkable
 PlayerController --> IClimbable
 PlayerController --> IFallable
@@ -233,6 +235,16 @@ class PositionAligner {
 }
 
 PositionAligner ..|> IPositionAligner
+
+Interface IIdleable {
+  +Idle(): void
+}
+
+class PlayerIdle {
+  +Idle(): void
+}
+
+PlayerIdle ..|> IIdleable
 
 interface IWalkable {
   +walkSpeed { get; }: float

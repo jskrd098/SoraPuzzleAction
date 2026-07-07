@@ -1544,6 +1544,7 @@ GameObject:
   - component: {fileID: 1705062086}
   - component: {fileID: 1705062087}
   - component: {fileID: 1705062088}
+  - component: {fileID: 1705062090}
   - component: {fileID: 1705062089}
   m_Layer: 3
   m_Name: Player
@@ -1785,6 +1786,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFall
   _fallSpeed: 6
+--- !u!114 &1705062090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705062079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6fba3978787cd4cb23b797ed9e3dfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerClimb
+  _climbSpeed: 5
 --- !u!1 &1898344492
 GameObject:
   m_ObjectHideFlags: 0

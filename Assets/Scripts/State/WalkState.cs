@@ -46,7 +46,6 @@ public class WalkState : IState
     /// </summary>
     public void Update()
     {
-        // Debug.Log($"WalkState update: moveInput={_input.moveInput}, IsGrounded={_sensor.IsGrounded()}, IsOnLadder={_sensor.IsOnLadder()}");
         switch (EvaluateTransition())
         {
             case TransitionType.Idle:
@@ -110,14 +109,6 @@ public class WalkState : IState
     /// </returns>
     private bool ShouldTransitionToIdle()
     {
-        // bool moveInputZero = _input.moveInput.x == 0;
-        // bool isGrounded = _sensor.IsGrounded();
-        // bool result = moveInputZero && isGrounded;
-        
-        // Debug.Log($"ShouldTransitionToIdle: moveInput.x={_input.moveInput.x} (zero={moveInputZero}), IsGrounded={isGrounded} | Result={result}");
-        
-        // return result;
-
         return _input.moveInput.x == 0 &&
                (_sensor.IsGrounded() || _sensor.IsOnLadder());
     }
