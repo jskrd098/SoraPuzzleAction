@@ -14,12 +14,17 @@ public class PlayerInput : MonoBehaviour, IPlayerInput
     /// <summary>
     /// プレイヤーの入力を読み取るメソッド
     /// </summary>
+    public void SetMoveInput(Vector2Int input)
+    {
+        moveInput = input;
+    }
+
     public void ReadInput()
     {
-        moveInput = new Vector2Int(
+        SetMoveInput(new Vector2Int(
             Mathf.RoundToInt(_inputAction.Player.Move.ReadValue<Vector2>().x),
             Mathf.RoundToInt(_inputAction.Player.Move.ReadValue<Vector2>().y)
-        );
+        ));
         jumpInput = _inputAction.Player.Jump.WasPressedThisFrame();
     }
 }

@@ -45,6 +45,10 @@ public class ClimbState : IState
     /// </summary>
     public void Update()
     {
+        // 停止時はAnimationを停止する
+        if (_input.moveInput.x == 0 && _input.moveInput.y == 0) _animation.Stop();
+        else _animation.Play();
+        
         switch (EvaluateTransition())
         {
             case TransitionType.Idle:
@@ -104,15 +108,9 @@ public class ClimbState : IState
     /// </returns>
     private bool ShouldTransitionToIdle()
     {
-        // return _input.moveInput.x == 0 &&
-        //        (_sensor.IsGrounded() || _sensor.IsOnLadder());
-
-        if (_input.moveInput.x == 0 && (_sensor.IsGrounded() || _sensor.IsOnLadder()))
-        {
-            Debug.Log("ClimbState: ShouldTransitionToIdle() => true");
-            return true;   
-        }
-        return false;
+        return _input.moveInput.x == 0 &&
+               _input.moveInput.y == 0 &&
+               (_sensor.IsGrounded() || _sensor.IsOnLadder());
     }
 
     /// <summary>
@@ -138,7 +136,7 @@ public class ClimbState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadder();
+               !_sensor.IsInLadderOr();
     }
 
     /// <summary>

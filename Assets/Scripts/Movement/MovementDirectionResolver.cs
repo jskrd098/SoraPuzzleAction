@@ -6,11 +6,32 @@ public class MovementDirectionResolver : IMovementDirectionResolver
     {
         int x = Mathf.RoundToInt(input.x);
         int y = Mathf.RoundToInt(input.y);
-        // 単軸入力
-        if (x == 0 || y == 0) return new Vector2Int(x, y);
-        // 斜め入力時
-        if (CanMoveVertical(player, y))        return new Vector2Int(0, y);
-        else if (CanMoveHorizontal(player, x)) return new Vector2Int(x, 0);
+
+        if (x == 0 || y == 0)
+        {
+            return new Vector2Int(x, y);
+        }
+
+        if (player._playerSensor != null && player._playerSensor.IsInLadderAnd())
+        {
+            return new Vector2Int(0, y);
+        }
+
+        if (player._playerSensor != null && player._playerSensor.IsGrounded())
+        {
+            return new Vector2Int(x, 0);
+        }
+
+        if (CanMoveVertical(player, y))
+        {
+            return new Vector2Int(0, y);
+        }
+
+        if (CanMoveHorizontal(player, x))
+        {
+            return new Vector2Int(x, 0);
+        }
+
         return Vector2Int.zero;
     }
 

@@ -99,7 +99,7 @@ public class JumpState : IState
     private bool ShouldTransitionToClimb()
     {
         return _input.moveInput.y != 0 &&
-               (_sensor.IsInLadder() || _sensor.IsOnLadder()) &&
+               (_sensor.IsInLadderAnd() || _sensor.IsOnLadder()) &&
                _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
     }
 
@@ -107,7 +107,7 @@ public class JumpState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadder();
+               !_sensor.IsInLadderAnd();
     }
 
     private bool ShouldTransitionToPush()

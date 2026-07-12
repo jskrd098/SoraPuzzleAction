@@ -126,7 +126,7 @@ public class IdleState : IState
     private bool ShouldTransitionToClimb()
     {
         return _input.moveInput.y != 0 &&
-               _sensor.IsInLadder() &&
+               _sensor.IsInLadderAnd() &&
                _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
     }
 
@@ -140,7 +140,7 @@ public class IdleState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadder();
+               !_sensor.IsInLadderAnd();
     }
 
     /// <summary>

@@ -1755,9 +1755,9 @@ MonoBehaviour:
     m_Bits: 128
   _groundCheckSize: {x: 0.65, y: 0.1}
   _groundCheckOffset: {x: 0.03, y: -0.5}
-  _ladderCheckDistance: 0.3
-  _ladderCheckOriginL: {x: -0.3, y: 0.3}
-  _ladderCheckOriginR: {x: 0.3, y: 0.3}
+  _ladderCheckDistance: 0.18
+  _ladderCheckOriginL: {x: -0.1, y: 0.3}
+  _ladderCheckOriginR: {x: 0.1, y: 0.3}
   _bodyCollider: {fileID: 0}
   checkScale: 0.9
 --- !u!114 &1705062088

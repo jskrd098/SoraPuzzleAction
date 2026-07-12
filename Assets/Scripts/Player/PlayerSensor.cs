@@ -40,7 +40,8 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
 
         if (_player != null && _player._playerInput != null)
         {
-            _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.moveInput);
+            Vector2Int resolvedInput = _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.moveInput);
+            _player._playerInput.SetMoveInput(resolvedInput);
         }
 
         // _isGrounded = IsGrounded();
@@ -84,10 +85,10 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
         return Physics2D.OverlapBox(checkPosition, _groundCheckSize, 0f, _ladderLayer);
     }
 
-    public bool IsInLadder()
-    {
-        return IsInLadderAnd() || IsInLadderOr();
-    }
+    // public bool IsInLadder()
+    // {
+    //     return IsInLadderAnd() || IsInLadderOr();
+    // }
 
     public bool CanMove(Vector2 direction)
     {
@@ -109,8 +110,8 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
     /// <returns>
     /// 梯子の中にいる場合:true、そうでない場合:false
     /// </returns>
-    private bool IsInLadderAnd() { return IsInLadderL() && IsInLadderR(); }
-    private bool IsInLadderOr() { return IsInLadderL() || IsInLadderR(); }
+    public bool IsInLadderAnd() { return IsInLadderL() && IsInLadderR(); }
+    public bool IsInLadderOr() { return IsInLadderL() || IsInLadderR(); }
     private bool IsInLadderL()
     {
         // Playerの中心位置
