@@ -59,6 +59,7 @@ using UnityEngine;
     /// </summary>
     public void Update()
     {
+        Debug.Log($"CurrentState: {CurrentState?.GetType().Name}");
         CurrentState?.Update();
     }
 }

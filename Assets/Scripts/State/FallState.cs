@@ -126,7 +126,7 @@ public class FallState : IState
     private bool ShouldTransitionToClimb()
     {
         return _input.moveInput.y != 0 &&
-               _sensor.IsOnLadder() &&
+               (_sensor.IsInLadder() || _sensor.IsOnLadder()) &&
                _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
     }
 

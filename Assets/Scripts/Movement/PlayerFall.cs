@@ -25,7 +25,7 @@ public class PlayerFall : MonoBehaviour, IFallable
     private void AlignPos(Rigidbody2D rb)
     {
         Vector2 pos = rb.position;
-        MovementUtils.PosAdjustX(ref pos, fallSpeed);
+        MovementUtils.PosAdjustXRound(ref pos, fallSpeed);
         rb.position = pos;
     }
 }

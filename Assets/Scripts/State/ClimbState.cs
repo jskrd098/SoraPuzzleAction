@@ -136,7 +136,7 @@ public class ClimbState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadderOr();
+               !_sensor.IsInLadder();
     }
 
     /// <summary>

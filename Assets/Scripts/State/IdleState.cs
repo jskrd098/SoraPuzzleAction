@@ -13,7 +13,7 @@ public class IdleState : IState
 
     private enum TransitionType
     {
-        None,
+        Idle,
         Walk,
         Climb,
         Fall,
@@ -101,7 +101,7 @@ public class IdleState : IState
         if (ShouldTransitionToPush()) return TransitionType.Push;
         if (ShouldTransitionToGoal()) return TransitionType.Goal;
         if (ShouldTransitionToMiss()) return TransitionType.Miss;
-        return TransitionType.None;
+        return TransitionType.Idle;
     }
 
     /// <summary>
@@ -125,9 +125,12 @@ public class IdleState : IState
     /// </returns>
     private bool ShouldTransitionToClimb()
     {
-        return _input.moveInput.y != 0 &&
-               _sensor.IsInLadderAnd() &&
-               _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
+        // return _input.moveInput.y != 0 &&
+        //        (_sensor.IsInLadderAnd() || _sensor.IsOnLadder()) &&
+        //        _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
+        return ((_input.moveInput.y != 0 && _sensor.IsInLadder())
+               || (_input.moveInput.y < 0 && _sensor.IsOnLadder()))
+               && _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
     }
 
     /// <summary>
@@ -140,7 +143,7 @@ public class IdleState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadderAnd();
+               !_sensor.IsInLadder();
     }
 
     /// <summary>

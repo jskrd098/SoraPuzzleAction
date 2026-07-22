@@ -10,7 +10,7 @@ public class PlayerIdle : MonoBehaviour, IIdleable
     {
         if (rb == null) return;
 
-        // 水平方向の速度をリセット（垂直方向は重力の影響を受けるため保持）
-        rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+        // 水平方向の速度をリセット
+        rb.linearVelocity = new Vector2(0, 0);
     }
 }

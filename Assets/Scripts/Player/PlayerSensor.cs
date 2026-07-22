@@ -4,28 +4,19 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
 {
     private PlayerController _player;
     private MovementDirectionResolver _movementDirectionResolver;
-    [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private LayerMask _ladderLayer;
+    [SerializeField] private LayerMask _groundLayer; // 接地判定用LayerMask
     [SerializeField] private Vector2 _groundCheckSize; // 接地判定用BoxColliderのサイズ
     [SerializeField] private Vector2 _groundCheckOffset; // 接地判定用BoxColliderの位置オフセット
-    [SerializeField] private float _ladderCheckDistance; // 梯子判定用RayCast長さ(左右共通)
-    [SerializeField] private Vector2 _ladderCheckOriginL; // 梯子判定用RayCast始点(左側)
-    [SerializeField] private Vector2 _ladderCheckOriginR; // 梯子判定用RayCast始点(右側)
-    [SerializeField] private BoxCollider2D _bodyCollider;
-    [SerializeField] private float checkScale = 0.9f;
-    // public bool _isGrounded { get; private set; }
-    // public bool _isOnLadder { get; private set; }
-    // public bool _isInLadderAnd { get; private set; }
-    // public bool _isInLadderOr { get; private set; }
+    [SerializeField] private LayerMask _ladderLayer; // 梯子判定用LayerMask
+    [SerializeField] private Vector2 _ladderCheckSize; // 梯子判定用BoxColliderのサイズ
+    [SerializeField] private Vector2 _ladderCheckOffset; // 梯子判定用BoxColliderの位置オフセット
+    [SerializeField] private BoxCollider2D _bodyCollider; // PlayerのBoxCollider2Dコンポーネント
+    [SerializeField] private float checkScale = 0.9f; // 移動可能判定用BoxColliderのサイズ調整用スケール
 
     private void Awake()
     {
         _player = GetComponent<PlayerController>();
         _movementDirectionResolver = new MovementDirectionResolver();
-        // _isGrounded = false;
-        // _isOnLadder = false;
-        // _isInLadderAnd = false;
-        // _isInLadderOr = false;
     }
 
     /// <summary>
@@ -43,12 +34,6 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
             Vector2Int resolvedInput = _movementDirectionResolver.ResolveDirection(_player, _player._playerInput.moveInput);
             _player._playerInput.SetMoveInput(resolvedInput);
         }
-
-        // _isGrounded = IsGrounded();
-        IsGrounded();
-        IsOnLadder();
-        IsInLadderAnd();
-        IsInLadderOr();
     }
 
     /// <summary>
@@ -78,21 +63,37 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
         // Playerの中心位置
         Vector2 position = (Vector2)transform.position;
         // IsInLadderがTrueの場合、OnLadderはFalseとする
-        if (IsInLadderOr()) return false;
+        if (IsInLadder()) return false;
         // Playerの中心位置から指定したオフセット分ずらした位置を中心にする
         Vector2 checkPosition = position + _groundCheckOffset;
         // 四角形の範囲内に梯子があるかを判定
         return Physics2D.OverlapBox(checkPosition, _groundCheckSize, 0f, _ladderLayer);
     }
 
-    // public bool IsInLadder()
-    // {
-    //     return IsInLadderAnd() || IsInLadderOr();
-    // }
+    /// <summary>
+    /// 梯子の中にいるかの判定
+    /// </summary>
+    /// <returns>
+    /// 梯子の中にいる場合:true、そうでない場合:false
+    /// </returns>
+    public bool IsInLadder()
+    {
+        // Playerの中心位置
+        Vector2 position = (Vector2)transform.position;
+        // Playerの中心位置から指定したオフセット分ずらした位置を中心にする
+        Vector2 checkPosition = position + _ladderCheckOffset;
+        // 四角形の範囲内に梯子があるかを判定
+        return Physics2D.OverlapBox(checkPosition, _ladderCheckSize, 0f, _ladderLayer);
+    }
 
+    /// <summary>
+    /// 指定した方向に移動可能かの判定
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
     public bool CanMove(Vector2 direction)
     {
-        var collider = _bodyCollider ?? GetComponent<BoxCollider2D>();
+        BoxCollider2D collider = _bodyCollider ?? GetComponent<BoxCollider2D>();
         if (collider == null)
         {
             return true;
@@ -104,37 +105,6 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
         return hit == null;
     }
 
-    /// <summary>
-    /// 梯子の中にいるかの判定
-    /// </summary>
-    /// <returns>
-    /// 梯子の中にいる場合:true、そうでない場合:false
-    /// </returns>
-    public bool IsInLadderAnd() { return IsInLadderL() && IsInLadderR(); }
-    public bool IsInLadderOr() { return IsInLadderL() || IsInLadderR(); }
-    private bool IsInLadderL()
-    {
-        // Playerの中心位置
-        Vector2 position = (Vector2)transform.position;
-        // RayCastの始点をPlayerの中心位置から指定したオフセット分ずらした位置にする
-        Vector2 origin = position + _ladderCheckOriginL;
-        // RayCastを上方向に指定した距離だけ飛ばして、梯子レイヤーに当たるかを判定
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up, _ladderCheckDistance, _ladderLayer);
-        // RayCastが梯子レイヤーに当たったかどうかを返す
-        return hit.collider != null;
-    }
-    private bool IsInLadderR()
-    {
-        // Playerの中心位置
-        Vector2 position = (Vector2)transform.position;
-        // RayCastの始点をPlayerの中心位置から指定したオフセット分ずらした位置にする
-        Vector2 origin = position + _ladderCheckOriginR;
-        // RayCastを上方向に指定した距離だけ飛ばして、梯子レイヤーに当たるかを判定
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.up, _ladderCheckDistance, _ladderLayer);
-        // RayCastが梯子レイヤーに当たったかどうかを返す
-        return hit.collider != null;
-    }
-
 #if UNITY_EDITOR
     /// <summary>
     /// デバッグ用: シーンビューに判定範囲を表示する(注：ヒエラルキー上で選択状態にすること) 
@@ -143,14 +113,12 @@ public class PlayerSensor : MonoBehaviour, ICharacterSensor
     {
         // 接地判定の範囲を緑色のワイヤーフレームで表示
         Gizmos.color = Color.green;
-        Vector2 checkPosition = (Vector2)transform.position + _groundCheckOffset;
-        Gizmos.DrawWireCube(checkPosition, _groundCheckSize);
-        // 梯子判定のRayCastを赤色の線で表示
-        Gizmos.color = Color.red;
-        Vector2 originL = (Vector2)transform.position + _ladderCheckOriginL;
-        Vector2 originR = (Vector2)transform.position + _ladderCheckOriginR;
-        Gizmos.DrawLine(originL, originL + Vector2.up * _ladderCheckDistance);
-        Gizmos.DrawLine(originR, originR + Vector2.up * _ladderCheckDistance);
+        Vector2 groundCheckPosition = (Vector2)transform.position + _groundCheckOffset;
+        Gizmos.DrawWireCube(groundCheckPosition, _groundCheckSize);
+        // 梯子判定の範囲を青色のワイヤーフレームで表示
+        Gizmos.color = Color.blue;
+        Vector2 ladderCheckPosition = (Vector2)transform.position + _ladderCheckOffset;
+        Gizmos.DrawWireCube(ladderCheckPosition, _ladderCheckSize);
     }
 #endif
 }

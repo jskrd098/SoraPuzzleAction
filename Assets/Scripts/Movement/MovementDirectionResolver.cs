@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class MovementDirectionResolver : IMovementDirectionResolver
 {
+    /// <summary>
+    /// プレイヤーの入力方向を解決する
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="input"></param>
+    /// <returns> 解決された方向 </returns>
     public Vector2Int ResolveDirection(PlayerController player, Vector2 input)
     {
         int x = Mathf.RoundToInt(input.x);
@@ -12,7 +18,7 @@ public class MovementDirectionResolver : IMovementDirectionResolver
             return new Vector2Int(x, y);
         }
 
-        if (player._playerSensor != null && player._playerSensor.IsInLadderAnd())
+        if (player._playerSensor != null && player._playerSensor.IsInLadder())
         {
             return new Vector2Int(0, y);
         }

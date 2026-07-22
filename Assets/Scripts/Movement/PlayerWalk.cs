@@ -28,7 +28,7 @@ public class PlayerWalk : MonoBehaviour, IWalkable
     private void AlignPos(Rigidbody2D rb)
     {
         Vector2 pos = rb.position;
-        MovementUtils.PosAdjustY(ref pos, walkSpeed);
+        MovementUtils.PosAdjustYRound(ref pos, walkSpeed);
         rb.position = pos;
     }
 }

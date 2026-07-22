@@ -11,11 +11,11 @@ public class JumpState : IState
 
     private enum TransitionType
     {
-        None,
         Idle,
         Walk,
         Climb,
         Fall,
+        Jump,
         Push,
         Goal,
         Miss
@@ -80,7 +80,7 @@ public class JumpState : IState
         if (ShouldTransitionToPush()) return TransitionType.Push;
         if (ShouldTransitionToGoal()) return TransitionType.Goal;
         if (ShouldTransitionToMiss()) return TransitionType.Miss;
-        return TransitionType.None;
+        return TransitionType.Jump;
     }
 
     private bool ShouldTransitionToIdle()
@@ -99,7 +99,7 @@ public class JumpState : IState
     private bool ShouldTransitionToClimb()
     {
         return _input.moveInput.y != 0 &&
-               (_sensor.IsInLadderAnd() || _sensor.IsOnLadder()) &&
+               (_sensor.IsInLadder() || _sensor.IsOnLadder()) &&
                _sensor.CanMove(new Vector2(_input.moveInput.y, 0));
     }
 
@@ -107,7 +107,7 @@ public class JumpState : IState
     {
         return !_sensor.IsGrounded() &&
                !_sensor.IsOnLadder() &&
-               !_sensor.IsInLadderAnd();
+               !_sensor.IsInLadder();
     }
 
     private bool ShouldTransitionToPush()
